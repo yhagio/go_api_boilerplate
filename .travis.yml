@@ -1,0 +1,17 @@
+language: go
+
+go:
+- 1.13.4
+
+env:
+- GO111MODULE=on
+
+# install:
+# - go get golang.org/x/tools/gopls@latest
+
+script:
+# - go test -v ./...
+- go test -v -coverprofile=coverage.txt -covermode=atomic
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)

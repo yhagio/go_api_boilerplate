@@ -1,0 +1,9 @@
+.env
+README.md
+script.sh
+docker-compose.yml
+Dockerfile
+.dockerignore
+.gitignore
+.travis.yml
+doc

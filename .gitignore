@@ -1,0 +1,11 @@
+*.env
+
+.DS_Store
+
+
+*.log
+.debug
+tmp
+
+.vscode
+.idea
