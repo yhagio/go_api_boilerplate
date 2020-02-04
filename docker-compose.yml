@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  pg:
+    image: postgres:11.2
+    container_name: pg
+    # volumes:
+      # - ./init.dev.sql:/docker-entrypoint-initdb.d/init.sql
+      # - pg_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: always
+
+# volumes:
+#   pg_data:
