@@ -1,5 +1,20 @@
 # Go (Golang) REST / GraphQL API Boilerplate
 
 Used libraries:
-- Gin
--
+- gin
+- gorm
+- godotenv
+
+---
+
+### Run
+
+```sh
+go run *.go
+```
+
+### Tests
+
+```sh
+go test -v ./...
+```
