@@ -54,6 +54,10 @@ func Run() {
 	// ====== Setup controllers ========
 	userController := controllers.NewUserController(userService)
 
+	// ====== Setup middlewares ========
+	router.Use(gin.Logger())
+	router.Use(gin.Recovery())
+
 	// ====== Setup routes =============
 	router.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
