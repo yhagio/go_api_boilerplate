@@ -32,7 +32,7 @@ func (u *userRepo) GetByID(id uint) (*user.User, error) {
 
 func (u *userRepo) GetByEmail(email string) (*user.User, error) {
 	var user user.User
-	if err := u.db.First(&user, email).Error; err != nil {
+	if err := u.db.Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil

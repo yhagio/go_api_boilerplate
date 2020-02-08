@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"errors"
-	"fmt"
 	"go_api_boilerplate/domain/user"
 	"go_api_boilerplate/services/auth_service"
 	"go_api_boilerplate/services/user_service"
@@ -49,7 +48,7 @@ func NewUserController(us user_service.UserService, as auth_service.AuthService)
 }
 
 func (ctl *userController) Register(c *gin.Context) {
-	// Validates (input, dupe user, email)
+	// Read user input
 	var userInput UserInput
 	if err := c.ShouldBindJSON(&userInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -63,34 +62,42 @@ func (ctl *userController) Register(c *gin.Context) {
 		return
 	}
 
-	// Login (issue token)
-	token, err := ctl.as.IssueToken(u)
+	// Login
+	err := ctl.login(c, &u)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	userOutput := ctl.mapToUserOutput(&u)
-
-	// Return user info + token
-	c.JSON(http.StatusOK, gin.H{
-		"token": token,
-		"user":  userOutput,
-	})
 }
 
 func (ctl *userController) Login(c *gin.Context) {
-	// Validates (input, dupe user, email)
+	// Read user input
 	var userInput UserInput
 	if err := c.ShouldBindJSON(&userInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	u := ctl.inputToUser(userInput)
-	fmt.Println(u)
-	// Get user
-	// Login (issue token)
-	// Return user info + token
+
+	// Get user from DB
+	user, err := ctl.us.GetByEmail(userInput.Email)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Check password
+	err = ctl.us.ComparePassword(userInput.Password, user.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Login
+	err = ctl.login(c, user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 }
 
 func (ctl *userController) GetByID(c *gin.Context) {
@@ -165,4 +172,20 @@ func (ctl *userController) mapToUserOutput(u *user.User) *UserOutput {
 		Role:      u.Role,
 		Active:    u.Active,
 	}
+}
+
+// Issue token and return user
+func (ctl *userController) login(c *gin.Context, u *user.User) error {
+	token, err := ctl.as.IssueToken(*u)
+	if err != nil {
+		return err
+	}
+	userOutput := ctl.mapToUserOutput(u)
+
+	// Return user info + token
+	c.JSON(http.StatusOK, gin.H{
+		"token": token,
+		"user":  userOutput,
+	})
+	return nil
 }

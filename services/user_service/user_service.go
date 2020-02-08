@@ -12,6 +12,7 @@ type UserService interface {
 	GetByID(id uint) (*user.User, error)
 	GetByEmail(email string) (*user.User, error)
 	Create(*user.User) error
+	ComparePassword(rawPassword string, passwordFromDB string) error
 }
 
 type userService struct {
@@ -66,4 +67,11 @@ func (us *userService) hashPassword(rawPassword string) (string, error) {
 	}
 
 	return string(hashed), err
+}
+
+func (us *userService) ComparePassword(rawPassword string, passwordFromDB string) error {
+	return bcrypt.CompareHashAndPassword(
+		[]byte(passwordFromDB),
+		[]byte(rawPassword+us.pepper),
+	)
 }
