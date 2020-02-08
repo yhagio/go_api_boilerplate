@@ -127,6 +127,11 @@ func (ctl *userController) GetByID(c *gin.Context) {
 	c.JSON(http.StatusOK, userOutput)
 }
 
+// @Summary Get user info of the logged in user
+// @Produce  json
+// @Success 200 {object} UserOutput
+// @Failure 500 {object} ErrorResponse
+// @Router /api/account/profile [get]
 func (ctl *userController) GetProfile(c *gin.Context) {
 	id, exists := c.Get("user_id")
 	if exists == false {

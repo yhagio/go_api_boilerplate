@@ -13,8 +13,11 @@
 ### Run
 
 ```sh
+swag init -g app/app.go
 go run *.go
 ```
+
+See Swagger Doc `http://localhost:3000/swagger/index.html`
 
 ### Tests
 
@@ -25,9 +28,8 @@ go test -v ./...
 
 ### Roadmap
 
-- [ ] Custom middlewares (JWT, Admin check, etc)
-- [ ] Auth (Register, Login, Logout, Reset Password)
-- [ ] CRUD examples
+- [ ] Admin middleware
+- [ ] Reset Password
 - [ ] Graphql endpoint
 - [ ] CI + tests
 - [ ] Badge
