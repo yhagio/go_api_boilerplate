@@ -11,11 +11,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// UserInput represents login/register request body format
 type UserInput struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
+// UserOutput represents returning user
 type UserOutput struct {
 	ID        uint   `json:"id"`
 	FirstName string `json:"firstName"`
@@ -25,6 +27,14 @@ type UserOutput struct {
 	Active    bool   `json:"active"`
 }
 
+// UserUpdateInput represents updating profile request body format
+type UserUpdateInput struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Email     string `json:"email"`
+}
+
+// UserController interface
 type UserController interface {
 	Register(*gin.Context)
 	Login(*gin.Context)
@@ -40,6 +50,7 @@ type userController struct {
 	as auth_service.AuthService
 }
 
+// NewUserController instantiates User Controller
 func NewUserController(us user_service.UserService, as auth_service.AuthService) UserController {
 	return &userController{
 		us: us,
@@ -133,15 +144,40 @@ func (ctl *userController) GetProfile(c *gin.Context) {
 }
 
 func (ctl *userController) Update(c *gin.Context) {
-	// Validates (input, dupe user, email)
-	var user UserInput
-	if err := c.ShouldBindJSON(&user); err != nil {
+	id, exists := c.Get("user_id")
+	if exists == false {
+		c.JSON(http.StatusInternalServerError, errors.New("Invalid User ID"))
+		return
+	}
+
+	user, err := ctl.us.GetByID(id.(uint))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	// Read user input
+	var userInput UserUpdateInput
+	if err := c.ShouldBindJSON(&userInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// Get user
-	// Login (issue token)
-	// Return user info + token
+
+	if user.ID != id {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": errors.New("Unauthorized")})
+		return
+	}
+
+	user.FirstName = userInput.FirstName
+	user.LastName = userInput.LastName
+	user.Email = userInput.Email
+
+	if err := ctl.us.Update(user); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	userOutput := ctl.mapToUserOutput(user)
+	c.JSON(http.StatusOK, userOutput)
 }
 
 func (ctl *userController) ForgotPassword(c *gin.Context) {}

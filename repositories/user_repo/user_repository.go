@@ -10,6 +10,7 @@ type UserRepo interface {
 	GetByID(id uint) (*user.User, error)
 	GetByEmail(email string) (*user.User, error)
 	Create(user *user.User) error
+	Update(user *user.User) error
 }
 
 type userRepo struct {
@@ -40,4 +41,8 @@ func (u *userRepo) GetByEmail(email string) (*user.User, error) {
 
 func (u *userRepo) Create(user *user.User) error {
 	return u.db.Create(user).Error
+}
+
+func (ug *userRepo) Update(user *user.User) error {
+	return ug.db.Save(user).Error
 }

@@ -12,6 +12,7 @@ type UserService interface {
 	GetByID(id uint) (*user.User, error)
 	GetByEmail(email string) (*user.User, error)
 	Create(*user.User) error
+	Update(*user.User) error
 	ComparePassword(rawPassword string, passwordFromDB string) error
 }
 
@@ -57,6 +58,10 @@ func (us *userService) Create(user *user.User) error {
 	}
 	user.Password = hashedPass
 	return us.Repo.Create(user)
+}
+
+func (us *userService) Update(user *user.User) error {
+	return us.Repo.Update(user)
 }
 
 func (us *userService) hashPassword(rawPassword string) (string, error) {

@@ -34,6 +34,11 @@ func (repo *repoMock) Create(user *user.User) error {
 	return args.Error(1)
 }
 
+func (repo *repoMock) Update(user *user.User) error {
+	args := repo.Called(user)
+	return args.Error(1)
+}
+
 func TestGetByID(t *testing.T) {
 	t.Run("Get a user", func(t *testing.T) {
 		expected := &user.User{
