@@ -184,6 +184,10 @@ func (ctl *userController) ForgotPassword(c *gin.Context) {}
 
 func (ctl *userController) ResetPassword(c *gin.Context) {}
 
+/*******************************/
+//       PRIVATE METHODS
+/*******************************/
+
 func (ctl *userController) getUserID(userIDParam string) (uint, error) {
 	userID, err := strconv.Atoi(userIDParam)
 	if err != nil {

@@ -53,7 +53,7 @@ func Run() {
 
 	// ====== Setup services ===========
 	userService := user_service.NewUserService(userRepo, config.Pepper)
-	authService := auth_service.NewAuthService(config.SigningKey)
+	authService := auth_service.NewAuthService(config.JWTSecret)
 
 	// ====== Setup controllers ========
 	userCtl := controllers.NewUserController(userService, authService)
@@ -77,7 +77,7 @@ func Run() {
 	user.GET("/:id", userCtl.GetByID)
 
 	account := api.Group("/account")
-	account.Use(middlewares.JWT(config.SigningKey))
+	account.Use(middlewares.JWT(config.JWTSecret))
 	{
 		account.GET("/profile", userCtl.GetProfile)
 		account.PUT("/profile", userCtl.Update)

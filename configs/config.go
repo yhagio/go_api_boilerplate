@@ -7,14 +7,14 @@ const (
 )
 
 type Config struct {
-	Env        string         `env:"ENV"`
-	Pepper     string         `env:"PEPPER"`
-	HMACKey    string         `env:"HMAC_KEY"`
-	Postgres   PostgresConfig `json:"postgres"`
-	Mailgun    MailgunConfig  `json:"mailgun"`
-	SigningKey string         `env:"signing_key"`
-	Host       string         `env:"APP_HOST"`
-	Port       string         `env:"APP_PORT"`
+	Env       string         `env:"ENV"`
+	Pepper    string         `env:"PEPPER"`
+	HMACKey   string         `env:"HMAC_KEY"`
+	Postgres  PostgresConfig `json:"postgres"`
+	Mailgun   MailgunConfig  `json:"mailgun"`
+	JWTSecret string         `env:"JWT_SIGN_KEY"`
+	Host      string         `env:"APP_HOST"`
+	Port      string         `env:"APP_PORT"`
 }
 
 func (c Config) IsProd() bool {
@@ -23,14 +23,14 @@ func (c Config) IsProd() bool {
 
 func GetConfig() Config {
 	return Config{
-		Env:        os.Getenv("ENV"),
-		Pepper:     os.Getenv("PEPPER"),
-		HMACKey:    os.Getenv("HMAC_KEY"),
-		Postgres:   GetPostgresConfig(),
-		Mailgun:    GetMailgunConfig(),
-		SigningKey: os.Getenv("JWT_SIGN_KEY"),
-		Host:       os.Getenv("APP_HOST"),
-		Port:       os.Getenv("APP_PORT"),
+		Env:       os.Getenv("ENV"),
+		Pepper:    os.Getenv("PEPPER"),
+		HMACKey:   os.Getenv("HMAC_KEY"),
+		Postgres:  GetPostgresConfig(),
+		Mailgun:   GetMailgunConfig(),
+		JWTSecret: os.Getenv("JWT_SIGN_KEY"),
+		Host:      os.Getenv("APP_HOST"),
+		Port:      os.Getenv("APP_PORT"),
 	}
 }
 
