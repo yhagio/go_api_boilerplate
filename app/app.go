@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go_api_boilerplate/configs"
 	"go_api_boilerplate/domain/user"
+	"go_api_boilerplate/middlewares"
 	"log"
 	"net/http"
 
@@ -13,6 +14,7 @@ import (
 
 	"go_api_boilerplate/controllers"
 	"go_api_boilerplate/repositories/user_repo"
+	"go_api_boilerplate/services/auth_service"
 	"go_api_boilerplate/services/user_service"
 
 	_ "github.com/lib/pq" // For Postgres setup
@@ -40,6 +42,7 @@ func Run() {
 	}
 
 	// Migration
+	// db.DropTableIfExists(&user.User{})
 	db.AutoMigrate(&user.User{})
 	defer db.Close()
 
@@ -49,21 +52,36 @@ func Run() {
 	userRepo := user_repo.NewUserRepo(db)
 
 	// ====== Setup services ===========
-	userService := user_service.NewUserService(userRepo)
+	userService := user_service.NewUserService(userRepo, config.Pepper)
+	authService := auth_service.NewAuthService(config.SigningKey)
 
 	// ====== Setup controllers ========
-	userController := controllers.NewUserController(userService)
+	userController := controllers.NewUserController(userService, authService)
 
 	// ====== Setup middlewares ========
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
 	// ====== Setup routes =============
-	router.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "pong")
-	})
+	router.GET("/ping", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
 
-	router.GET("/users/:id", userController.GetById)
+	api := router.Group("/api")
+
+	api.POST("/register", userController.Register)
+	api.POST("/login", userController.Login)
+	api.POST("/forgot_password", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
+	api.POST("/reset_password", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
+
+	user := api.Group("/users")
+
+	user.GET("/:id", userController.GetByID)
+
+	account := api.Group("/account")
+	account.Use(middlewares.JWT(config.SigningKey))
+	{
+		account.GET("/profile", userController.GetProfile)
+		account.PUT("/profile", userController.Update)
+	}
 
 	// Run
 	// port := fmt.Sprintf(":%s", viper.Get("APP_PORT"))

@@ -9,17 +9,35 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+var (
+	pepper    = "pepper"
+	testID10  = uint(10)
+	testID100 = uint(100)
+)
+
 type repoMock struct {
 	mock.Mock
 }
 
-func (repo *repoMock) GetById(id int) (*user.User, error) {
+func (repo *repoMock) GetByID(id uint) (*user.User, error) {
 	args := repo.Called(id)
 
 	return args.Get(0).(*user.User), args.Error(1)
 }
 
-func TestGetById(t *testing.T) {
+func (repo *repoMock) GetByEmail(email string) (*user.User, error) {
+	args := repo.Called(email)
+
+	return args.Get(0).(*user.User), args.Error(1)
+}
+
+func (repo *repoMock) Create(user *user.User) error {
+	args := repo.Called(user)
+
+	return args.Error(1)
+}
+
+func TestGetByID(t *testing.T) {
 	t.Run("Get a user", func(t *testing.T) {
 		expected := &user.User{
 			FirstName: "Test",
@@ -28,11 +46,11 @@ func TestGetById(t *testing.T) {
 
 		userRepo := new(repoMock)
 
-		userRepo.On("GetById", 100).Return(expected, nil)
+		userRepo.On("GetByID", testID100).Return(expected, nil)
 
-		u := NewUserService(userRepo)
+		u := NewUserService(userRepo, pepper)
 
-		result, _ := u.GetById(100)
+		result, _ := u.GetByID(testID100)
 
 		assert.EqualValues(t, expected, result)
 	})
@@ -42,9 +60,9 @@ func TestGetById(t *testing.T) {
 
 		userRepo := new(repoMock)
 
-		u := NewUserService(userRepo)
+		u := NewUserService(userRepo, pepper)
 
-		result, err := u.GetById(0)
+		result, err := u.GetByID(0)
 
 		assert.Nil(t, result)
 		assert.EqualValues(t, expected, err)
@@ -54,11 +72,11 @@ func TestGetById(t *testing.T) {
 		expected := errors.New("Nop")
 
 		userRepo := new(repoMock)
-		userRepo.On("GetById", 10).Return(&user.User{}, expected)
+		userRepo.On("GetByID", testID10).Return(&user.User{}, expected)
 
-		u := NewUserService(userRepo)
+		u := NewUserService(userRepo, pepper)
 
-		result, err := u.GetById(10)
+		result, err := u.GetByID(testID10)
 
 		assert.Nil(t, result)
 		assert.EqualValues(t, expected, err)

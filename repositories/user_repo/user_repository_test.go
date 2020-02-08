@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetById(t *testing.T) {
+func TestGetByID(t *testing.T) {
 
 	db, mock, err := sqlmock.New()
 	if err != nil {
@@ -39,7 +39,7 @@ func TestGetById(t *testing.T) {
 				sqlmock.NewRows([]string{"email"}).
 					AddRow("alice@cc.cc"))
 
-		result, err := u.GetById(100)
+		result, err := u.GetByID(100)
 
 		assert.EqualValues(t, expected, result)
 		assert.Nil(t, err)
@@ -54,7 +54,7 @@ func TestGetById(t *testing.T) {
 			ExpectQuery(`SELECT \* FROM "users" WHERE "users"\."deleted_at" IS NULL AND \(\("users"\."id" \= 100\)\) ORDER BY "users"\."id" ASC LIMIT 1`).
 			WillReturnError(expected)
 
-		result, err := u.GetById(100)
+		result, err := u.GetByID(100)
 
 		assert.EqualValues(t, expected, err)
 		assert.Nil(t, result)
@@ -70,7 +70,7 @@ func TestGetById(t *testing.T) {
 			WillReturnRows(
 				sqlmock.NewRows([]string{}))
 
-		result, err := u.GetById(100)
+		result, err := u.GetByID(100)
 
 		assert.EqualValues(t, expected, err)
 		assert.Nil(t, result)

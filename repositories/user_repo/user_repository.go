@@ -7,7 +7,9 @@ import (
 )
 
 type UserRepo interface {
-	GetById(id int) (*user.User, error)
+	GetByID(id uint) (*user.User, error)
+	GetByEmail(email string) (*user.User, error)
+	Create(user *user.User) error
 }
 
 type userRepo struct {
@@ -20,10 +22,22 @@ func NewUserRepo(db *gorm.DB) UserRepo {
 	}
 }
 
-func (u *userRepo) GetById(id int) (*user.User, error) {
+func (u *userRepo) GetByID(id uint) (*user.User, error) {
 	var user user.User
 	if err := u.db.First(&user, id).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
+}
+
+func (u *userRepo) GetByEmail(email string) (*user.User, error) {
+	var user user.User
+	if err := u.db.First(&user, email).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (u *userRepo) Create(user *user.User) error {
+	return u.db.Create(user).Error
 }

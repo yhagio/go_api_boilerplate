@@ -24,17 +24,18 @@ go test -v ./...
 
 ### Roadmap
 
-- [ ] CRUD examples
-- [ ] MongoDB
-- [ ] Auth (Register, Login, Logout, Reset Password)
 - [ ] Custom middlewares (JWT, Admin check, etc)
+- [ ] Auth (Register, Login, Logout, Reset Password)
+- [ ] CRUD examples
 - [ ] Graphql endpoint
-- [ ] Directory README and diagrams
 - [ ] CI + tests
 - [ ] Badge
 - [ ] Deployment (CD) - Digital Ocean, Heroku
+- [ ] Directory README and diagrams
 
 - [ ] gRPC
 - [ ] Redis Streams
 - [ ] Redis PubSub
 - [ ] WebSocket
+
+- [ ] MongoDB (Different repo)
