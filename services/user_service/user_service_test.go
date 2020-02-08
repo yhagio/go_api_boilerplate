@@ -21,19 +21,16 @@ type repoMock struct {
 
 func (repo *repoMock) GetByID(id uint) (*user.User, error) {
 	args := repo.Called(id)
-
 	return args.Get(0).(*user.User), args.Error(1)
 }
 
 func (repo *repoMock) GetByEmail(email string) (*user.User, error) {
 	args := repo.Called(email)
-
 	return args.Get(0).(*user.User), args.Error(1)
 }
 
 func (repo *repoMock) Create(user *user.User) error {
 	args := repo.Called(user)
-
 	return args.Error(1)
 }
 
@@ -45,11 +42,8 @@ func TestGetByID(t *testing.T) {
 		}
 
 		userRepo := new(repoMock)
-
 		userRepo.On("GetByID", testID100).Return(expected, nil)
-
 		u := NewUserService(userRepo, pepper)
-
 		result, _ := u.GetByID(testID100)
 
 		assert.EqualValues(t, expected, result)
@@ -59,9 +53,7 @@ func TestGetByID(t *testing.T) {
 		expected := errors.New("id param is required")
 
 		userRepo := new(repoMock)
-
 		u := NewUserService(userRepo, pepper)
-
 		result, err := u.GetByID(0)
 
 		assert.Nil(t, result)
@@ -73,9 +65,7 @@ func TestGetByID(t *testing.T) {
 
 		userRepo := new(repoMock)
 		userRepo.On("GetByID", testID10).Return(&user.User{}, expected)
-
 		u := NewUserService(userRepo, pepper)
-
 		result, err := u.GetByID(testID10)
 
 		assert.Nil(t, result)

@@ -56,7 +56,7 @@ func Run() {
 	authService := auth_service.NewAuthService(config.SigningKey)
 
 	// ====== Setup controllers ========
-	userController := controllers.NewUserController(userService, authService)
+	userCtl := controllers.NewUserController(userService, authService)
 
 	// ====== Setup middlewares ========
 	router.Use(gin.Logger())
@@ -67,20 +67,20 @@ func Run() {
 
 	api := router.Group("/api")
 
-	api.POST("/register", userController.Register)
-	api.POST("/login", userController.Login)
-	api.POST("/forgot_password", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
-	api.POST("/reset_password", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
+	api.POST("/register", userCtl.Register)
+	api.POST("/login", userCtl.Login)
+	api.POST("/forgot_password", userCtl.ForgotPassword)
+	api.POST("/reset_password", userCtl.ResetPassword)
 
 	user := api.Group("/users")
 
-	user.GET("/:id", userController.GetByID)
+	user.GET("/:id", userCtl.GetByID)
 
 	account := api.Group("/account")
 	account.Use(middlewares.JWT(config.SigningKey))
 	{
-		account.GET("/profile", userController.GetProfile)
-		account.PUT("/profile", userController.Update)
+		account.GET("/profile", userCtl.GetProfile)
+		account.PUT("/profile", userCtl.Update)
 	}
 
 	// Run

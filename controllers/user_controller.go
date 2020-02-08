@@ -19,7 +19,6 @@ type UserInput struct {
 
 type UserOutput struct {
 	ID        uint   `json:"id"`
-	Username  string `json:"username"`
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
 	Email     string `json:"email"`
@@ -33,6 +32,8 @@ type UserController interface {
 	GetByID(*gin.Context)
 	GetProfile(*gin.Context)
 	Update(*gin.Context)
+	ForgotPassword(*gin.Context)
+	ResetPassword(*gin.Context)
 }
 
 type userController struct {
@@ -69,15 +70,7 @@ func (ctl *userController) Register(c *gin.Context) {
 		return
 	}
 
-	userOutput := &UserOutput{
-		ID: u.ID,
-		// Username:  u.Username,
-		Email:     u.Email,
-		FirstName: u.FirstName,
-		LastName:  u.LastName,
-		Role:      u.Role,
-		Active:    u.Active,
-	}
+	userOutput := ctl.mapToUserOutput(&u)
 
 	// Return user info + token
 	c.JSON(http.StatusOK, gin.H{
@@ -112,7 +105,8 @@ func (ctl *userController) GetByID(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+	userOutput := ctl.mapToUserOutput(user)
+	c.JSON(http.StatusOK, userOutput)
 }
 
 func (ctl *userController) GetProfile(c *gin.Context) {
@@ -127,7 +121,8 @@ func (ctl *userController) GetProfile(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+	userOutput := ctl.mapToUserOutput(user)
+	c.JSON(http.StatusOK, userOutput)
 }
 
 func (ctl *userController) Update(c *gin.Context) {
@@ -142,6 +137,10 @@ func (ctl *userController) Update(c *gin.Context) {
 	// Return user info + token
 }
 
+func (ctl *userController) ForgotPassword(c *gin.Context) {}
+
+func (ctl *userController) ResetPassword(c *gin.Context) {}
+
 func (ctl *userController) getUserID(userIDParam string) (uint, error) {
 	userID, err := strconv.Atoi(userIDParam)
 	if err != nil {
@@ -154,5 +153,16 @@ func (ctl *userController) inputToUser(input UserInput) user.User {
 	return user.User{
 		Email:    input.Email,
 		Password: input.Password,
+	}
+}
+
+func (ctl *userController) mapToUserOutput(u *user.User) *UserOutput {
+	return &UserOutput{
+		ID:        u.ID,
+		Email:     u.Email,
+		FirstName: u.FirstName,
+		LastName:  u.LastName,
+		Role:      u.Role,
+		Active:    u.Active,
 	}
 }

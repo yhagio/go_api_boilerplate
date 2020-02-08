@@ -50,7 +50,7 @@ func (us *userService) GetByEmail(email string) (*user.User, error) {
 }
 
 func (us *userService) Create(user *user.User) error {
-	hashedPass, err := us.generatePassWord(user.Password)
+	hashedPass, err := us.hashPassword(user.Password)
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func (us *userService) Create(user *user.User) error {
 	return us.Repo.Create(user)
 }
 
-func (us *userService) generatePassWord(rawPassword string) (string, error) {
+func (us *userService) hashPassword(rawPassword string) (string, error) {
 	passAndPepper := rawPassword + us.pepper
 	hashed, err := bcrypt.GenerateFromPassword([]byte(passAndPepper), bcrypt.DefaultCost)
 	if err != nil {

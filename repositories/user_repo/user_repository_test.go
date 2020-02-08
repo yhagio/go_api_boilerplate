@@ -12,8 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetByID(t *testing.T) {
-
+func setupDB() (*gorm.DB, sqlmock.Sqlmock) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		log.Fatalf("can't create sqlmock: %s", err)
@@ -24,6 +23,11 @@ func TestGetByID(t *testing.T) {
 		log.Fatalf("can't open gorm connection: %s", err)
 	}
 	gormDB.LogMode(true)
+	return gormDB, mock
+}
+
+func TestGetByID(t *testing.T) {
+	gormDB, mock := setupDB()
 	defer gormDB.Close()
 
 	t.Run("Get a user", func(t *testing.T) {

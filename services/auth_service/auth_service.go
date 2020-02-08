@@ -1,8 +1,6 @@
 package auth_service
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"go_api_boilerplate/domain/user"
 	"time"
 
@@ -46,10 +44,7 @@ func (auth *authService) IssueToken(u user.User) (string, error) {
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	token, err := tokenClaims.SignedString([]byte(auth.jwtSecret))
-
-	return token, err
+	return tokenClaims.SignedString([]byte(auth.jwtSecret))
 }
 
 // ParseToken parsing token
@@ -70,11 +65,4 @@ func (auth *authService) ParseToken(token string) (*Claims, error) {
 	}
 
 	return nil, err
-}
-
-func (auth *authService) EncodeMD5(value string) string {
-	m := md5.New()
-	m.Write([]byte(value))
-
-	return hex.EncodeToString(m.Sum(nil))
 }
