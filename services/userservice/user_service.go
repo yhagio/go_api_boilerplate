@@ -14,6 +14,7 @@ type UserService interface {
 	GetByEmail(email string) (*user.User, error)
 	Create(*user.User) error
 	Update(*user.User) error
+	HashPassword(rawPassword string) (string, error)
 	ComparePassword(rawPassword string, passwordFromDB string) error
 }
 
@@ -53,7 +54,7 @@ func (us *userService) GetByEmail(email string) (*user.User, error) {
 }
 
 func (us *userService) Create(user *user.User) error {
-	hashedPass, err := us.hashPassword(user.Password)
+	hashedPass, err := us.HashPassword(user.Password)
 	if err != nil {
 		return err
 	}
@@ -65,7 +66,7 @@ func (us *userService) Update(user *user.User) error {
 	return us.Repo.Update(user)
 }
 
-func (us *userService) hashPassword(rawPassword string) (string, error) {
+func (us *userService) HashPassword(rawPassword string) (string, error) {
 	passAndPepper := rawPassword + us.pepper
 	hashed, err := bcrypt.GenerateFromPassword([]byte(passAndPepper), bcrypt.DefaultCost)
 	if err != nil {
