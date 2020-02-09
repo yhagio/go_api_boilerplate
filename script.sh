@@ -13,6 +13,7 @@ test() {
 }
 
 run() {
+  go run github.com/99designs/gqlgen -v
   swag init -g app/app.go
   go run *.go
 }

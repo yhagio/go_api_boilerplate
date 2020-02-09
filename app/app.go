@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go_api_boilerplate/configs"
 	"go_api_boilerplate/domain/user"
+	"go_api_boilerplate/gql"
 	"go_api_boilerplate/middlewares"
 	"log"
 	"net/http"
@@ -90,6 +91,9 @@ func Run() {
 
 	// ====== Setup routes =============
 	router.GET("/ping", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
+
+	router.GET("/graphql", gql.PlaygroundHandler("/query"))
+	router.POST("/query", gql.GraphqlHandler())
 
 	api := router.Group("/api")
 
