@@ -6,6 +6,7 @@ const (
 	prod = "production"
 )
 
+// Config object
 type Config struct {
 	Env       string         `env:"ENV"`
 	Pepper    string         `env:"PEPPER"`
@@ -17,10 +18,12 @@ type Config struct {
 	Port      string         `env:"APP_PORT"`
 }
 
+// IsProd Checks if env is production
 func (c Config) IsProd() bool {
 	return c.Env == prod
 }
 
+// GetConfig gets all config for the application
 func GetConfig() Config {
 	return Config{
 		Env:       os.Getenv("ENV"),

@@ -1,13 +1,14 @@
-package user_service
+package userservice
 
 import (
 	"errors"
 	"go_api_boilerplate/domain/user"
-	"go_api_boilerplate/repositories/user_repo"
+	"go_api_boilerplate/repositories/userrepo"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
+// UserService interface
 type UserService interface {
 	GetByID(id uint) (*user.User, error)
 	GetByEmail(email string) (*user.User, error)
@@ -17,12 +18,12 @@ type UserService interface {
 }
 
 type userService struct {
-	Repo   user_repo.UserRepo
+	Repo   userrepo.UserRepo
 	pepper string
 }
 
 // NewUserService will instantiate User Service
-func NewUserService(repo user_repo.UserRepo, pepper string) UserService {
+func NewUserService(repo userrepo.UserRepo, pepper string) UserService {
 	return &userService{
 		Repo:   repo,
 		pepper: pepper,

@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// PostgresConfig object
 type PostgresConfig struct {
 	Host     string `env:"DB_HOST"`
 	Port     int    `env:"DB_PORT"`
@@ -14,10 +15,12 @@ type PostgresConfig struct {
 	Name     string `env:"DB_NAME"`
 }
 
+// Dialect returns "postgres"
 func (c PostgresConfig) Dialect() string {
 	return "postgres"
 }
 
+// GetPostgresConnectionInfo returns Postgres URL string
 func (c PostgresConfig) GetPostgresConnectionInfo() string {
 	if c.Password == "" {
 		return fmt.Sprintf(
@@ -29,6 +32,7 @@ func (c PostgresConfig) GetPostgresConnectionInfo() string {
 		c.Host, c.Port, c.User, c.Password, c.Name)
 }
 
+// GetPostgresConfig returns PostgresConfig object
 func GetPostgresConfig() PostgresConfig {
 	port, err := strconv.Atoi(os.Getenv("DB_PORT"))
 	if err != nil {

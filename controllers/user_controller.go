@@ -3,8 +3,8 @@ package controllers
 import (
 	"errors"
 	"go_api_boilerplate/domain/user"
-	"go_api_boilerplate/services/auth_service"
-	"go_api_boilerplate/services/user_service"
+	"go_api_boilerplate/services/authservice"
+	"go_api_boilerplate/services/userservice"
 	"net/http"
 	"strconv"
 	"strings"
@@ -47,12 +47,12 @@ type UserController interface {
 }
 
 type userController struct {
-	us user_service.UserService
-	as auth_service.AuthService
+	us userservice.UserService
+	as authservice.AuthService
 }
 
 // NewUserController instantiates User Controller
-func NewUserController(us user_service.UserService, as auth_service.AuthService) UserController {
+func NewUserController(us userservice.UserService, as authservice.AuthService) UserController {
 	return &userController{
 		us: us,
 		as: as,
@@ -71,21 +71,21 @@ func (ctl *userController) Register(c *gin.Context) {
 	// Read user input
 	var userInput UserInput
 	if err := c.ShouldBindJSON(&userInput); err != nil {
-		HttpRes(c, http.StatusBadRequest, err.Error(), nil)
+		HTTPRes(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 	u := ctl.inputToUser(userInput)
 
 	// Create user
 	if err := ctl.us.Create(&u); err != nil {
-		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
 	// Login
 	err := ctl.login(c, &u)
 	if err != nil {
-		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 }
@@ -102,28 +102,28 @@ func (ctl *userController) Login(c *gin.Context) {
 	// Read user input
 	var userInput UserInput
 	if err := c.ShouldBindJSON(&userInput); err != nil {
-		HttpRes(c, http.StatusBadRequest, err.Error(), nil)
+		HTTPRes(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	// Get user from DB
 	user, err := ctl.us.GetByEmail(userInput.Email)
 	if err != nil {
-		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
 	// Check password
 	err = ctl.us.ComparePassword(userInput.Password, user.Password)
 	if err != nil {
-		HttpRes(c, http.StatusBadRequest, err.Error(), nil)
+		HTTPRes(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	// Login
 	err = ctl.login(c, user)
 	if err != nil {
-		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 }
@@ -138,7 +138,7 @@ func (ctl *userController) Login(c *gin.Context) {
 func (ctl *userController) GetByID(c *gin.Context) {
 	id, err := ctl.getUserID(c.Param(("id")))
 	if err != nil {
-		HttpRes(c, http.StatusBadRequest, err.Error(), nil)
+		HTTPRes(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -146,14 +146,14 @@ func (ctl *userController) GetByID(c *gin.Context) {
 	if err != nil {
 		es := err.Error()
 		if strings.Contains(es, "not found") {
-			HttpRes(c, http.StatusNotFound, es, nil)
+			HTTPRes(c, http.StatusNotFound, es, nil)
 			return
 		}
-		HttpRes(c, http.StatusInternalServerError, es, nil)
+		HTTPRes(c, http.StatusInternalServerError, es, nil)
 		return
 	}
 	userOutput := ctl.mapToUserOutput(user)
-	HttpRes(c, http.StatusOK, "ok", userOutput)
+	HTTPRes(c, http.StatusOK, "ok", userOutput)
 }
 
 // @Summary Get user info of the logged in user
@@ -165,17 +165,17 @@ func (ctl *userController) GetByID(c *gin.Context) {
 func (ctl *userController) GetProfile(c *gin.Context) {
 	id, exists := c.Get("user_id")
 	if exists == false {
-		HttpRes(c, http.StatusBadRequest, "Invalid User ID", nil)
+		HTTPRes(c, http.StatusBadRequest, "Invalid User ID", nil)
 		return
 	}
 
 	user, err := ctl.us.GetByID(id.(uint))
 	if err != nil {
-		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 	userOutput := ctl.mapToUserOutput(user)
-	HttpRes(c, http.StatusOK, "ok", userOutput)
+	HTTPRes(c, http.StatusOK, "ok", userOutput)
 }
 
 // @Summary Update account profile
@@ -191,27 +191,27 @@ func (ctl *userController) Update(c *gin.Context) {
 	// Get user id from context
 	id, exists := c.Get("user_id")
 	if exists == false {
-		HttpRes(c, http.StatusBadRequest, "Invalid User ID", nil)
+		HTTPRes(c, http.StatusBadRequest, "Invalid User ID", nil)
 		return
 	}
 
 	// Retrieve user given id
 	user, err := ctl.us.GetByID(id.(uint))
 	if err != nil {
-		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
 	// Read user input
 	var userInput UserUpdateInput
 	if err := c.ShouldBindJSON(&userInput); err != nil {
-		HttpRes(c, http.StatusBadRequest, err.Error(), nil)
+		HTTPRes(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	// Check user
 	if user.ID != id {
-		HttpRes(c, http.StatusUnauthorized, "Unauthorized", nil)
+		HTTPRes(c, http.StatusUnauthorized, "Unauthorized", nil)
 		return
 	}
 
@@ -220,13 +220,13 @@ func (ctl *userController) Update(c *gin.Context) {
 	user.LastName = userInput.LastName
 	user.Email = userInput.Email
 	if err := ctl.us.Update(user); err != nil {
-		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
 	// Response
 	userOutput := ctl.mapToUserOutput(user)
-	HttpRes(c, http.StatusOK, "ok", userOutput)
+	HTTPRes(c, http.StatusOK, "ok", userOutput)
 }
 
 func (ctl *userController) ForgotPassword(c *gin.Context) {}
@@ -270,6 +270,6 @@ func (ctl *userController) login(c *gin.Context, u *user.User) error {
 		return err
 	}
 	userOutput := ctl.mapToUserOutput(u)
-	HttpRes(c, http.StatusOK, "ok", gin.H{"token": token, "user": userOutput})
+	HTTPRes(c, http.StatusOK, "ok", gin.H{"token": token, "user": userOutput})
 	return nil
 }

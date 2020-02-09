@@ -14,16 +14,25 @@
 
 ### Run locally
 
+If you are using Linux/Mac
 ```sh
-# Start Postgres
-docker-compose up
-# Generates Swagger
-go get -u github.com/swaggo/swag/cmd/swag
-swag init -g app/app.go
-# Start application
-go run *.go
-# Test
-go test -v -cover ./...
+source script.sh
+
+up    # docker-compose up (Run postgres)
+down  # docker-compose down (Shutdown postgres)
+
+run   # Run application
+test  # Run go test
+```
+
+or
+```sh
+docker-compose up        # docker-compose up (Run postgres)
+docker-compose down      # docker-compose down (Shutdown postgres)
+
+swag init -g app/app.go  # Generates Swagger
+go run *.go              # Run application
+go test -v -cover ./...  # Run go test
 ```
 
 See Swagger Doc `http://localhost:3000/swagger/index.html`
@@ -39,9 +48,11 @@ See Swagger Doc `http://localhost:3000/swagger/index.html`
 - [ ] Deployment (CD) - Digital Ocean, Heroku
 - [ ] Directory README and diagrams
 
+---
+maybe
+
 - [ ] gRPC
 - [ ] Redis Streams
 - [ ] Redis PubSub
 - [ ] WebSocket
-
-- [ ] MongoDB (Different repo)
+- [ ] MongoDB

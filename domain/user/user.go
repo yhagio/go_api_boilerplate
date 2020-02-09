@@ -2,6 +2,7 @@ package user
 
 import "github.com/jinzhu/gorm"
 
+// User domain model
 type User struct {
 	gorm.Model
 	FirstName string `gorm:"size:255"`

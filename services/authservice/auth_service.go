@@ -1,4 +1,4 @@
-package auth_service
+package authservice
 
 import (
 	"go_api_boilerplate/domain/user"
@@ -7,6 +7,7 @@ import (
 	jwt "gopkg.in/dgrijalva/jwt-go.v3"
 )
 
+// AuthService interface
 type AuthService interface {
 	IssueToken(u user.User) (string, error)
 	ParseToken(token string) (*Claims, error)
@@ -23,6 +24,7 @@ func NewAuthService(jwtSecret string) AuthService {
 	}
 }
 
+// Claims represents JWT claims
 type Claims struct {
 	Email string `json:"email"`
 	ID    uint   `json:"id"`
@@ -32,7 +34,7 @@ type Claims struct {
 // GenerateToken generate tokens used for auth
 func (auth *authService) IssueToken(u user.User) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(3 * time.Hour)
+	expireTime := nowTime.Add(24 * time.Hour) // 24 hours
 
 	claims := Claims{
 		u.Email,

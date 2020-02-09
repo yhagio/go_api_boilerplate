@@ -1,4 +1,4 @@
-package user_repo
+package userrepo
 
 import (
 	"go_api_boilerplate/domain/user"
@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// UserRepo interface
 type UserRepo interface {
 	GetByID(id uint) (*user.User, error)
 	GetByEmail(email string) (*user.User, error)
@@ -17,6 +18,7 @@ type userRepo struct {
 	db *gorm.DB
 }
 
+// NewUserRepo will instantiate User Repository
 func NewUserRepo(db *gorm.DB) UserRepo {
 	return &userRepo{
 		db: db,
@@ -43,6 +45,6 @@ func (u *userRepo) Create(user *user.User) error {
 	return u.db.Create(user).Error
 }
 
-func (ug *userRepo) Update(user *user.User) error {
-	return ug.db.Save(user).Error
+func (u *userRepo) Update(user *user.User) error {
+	return u.db.Save(user).Error
 }
