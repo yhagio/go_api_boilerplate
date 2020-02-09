@@ -1,4 +1,5 @@
 # Infra
 
-- Message brokers
-- 3rd party libs
+This directory's purpose:
+
+- Define 3rd party dependent logics

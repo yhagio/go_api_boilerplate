@@ -1,6 +1,8 @@
 # App
 
+This direcotry's purpose:
+
 - Setup application configs
-- Setup singletons (controllers, services, etc)
+- Instantiate singletons (controllers, services, etc)
 - Setup routes
-- Start application
+- Start application logic
