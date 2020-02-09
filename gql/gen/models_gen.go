@@ -2,21 +2,27 @@
 
 package gen
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type RegisterLogin struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+type RegisterLoginOutput struct {
+	Token string `json:"token"`
+	User  *User  `json:"user"`
+}
+
+type UpdateUser struct {
+	FirstName *string `json:"firstName"`
+	LastName  *string `json:"lastName"`
+	Email     string  `json:"email"`
 }
 
 type User struct {
-	ID    string `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	Age   int    `json:"age"`
+	ID        int    `json:"id"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Email     string `json:"email"`
+	Role      string `json:"role"`
+	Active    bool   `json:"active"`
 }

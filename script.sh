@@ -12,8 +12,14 @@ test() {
   go test -v -cover ./...
 }
 
-run() {
+gql() {
   go run github.com/99designs/gqlgen -v
+}
+
+swag() {
   swag init -g app/app.go
+}
+
+run() {
   go run *.go
 }

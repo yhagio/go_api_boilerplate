@@ -3,14 +3,22 @@ package gql
 import (
 	"go_api_boilerplate/gql/gen"
 
+	"go_api_boilerplate/services/authservice"
+	"go_api_boilerplate/services/userservice"
+
 	"github.com/99designs/gqlgen/handler"
 	"github.com/gin-gonic/gin"
 )
 
 // GraphqlHandler defines the GQLGen GraphQL server handler
-func GraphqlHandler() gin.HandlerFunc {
+func GraphqlHandler(us userservice.UserService, as authservice.AuthService) gin.HandlerFunc {
 	// NewExecutableSchema and Config are in the generated.go file
-	conf := gen.Config{Resolvers: &Resolver{}}
+	conf := gen.Config{
+		Resolvers: &Resolver{
+			UserService: us,
+			AuthService: as,
+		},
+	}
 	exec := gen.NewExecutableSchema(conf)
 	h := handler.GraphQL(exec)
 	return func(c *gin.Context) { h.ServeHTTP(c.Writer, c.Request) }

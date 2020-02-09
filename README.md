@@ -14,35 +14,25 @@
 
 ### Run locally
 
-If you are using Linux/Mac
 ```sh
-source script.sh
-
-up    # docker-compose up (Run postgres)
-down  # docker-compose down (Shutdown postgres)
-
-run   # Run application
-test  # Run go test
-```
-
-or
-```sh
+# Terminal 1
 docker-compose up        # docker-compose up (Run postgres)
 docker-compose down      # docker-compose down (Shutdown postgres)
 
-swag init -g app/app.go  # Generates Swagger
-go run *.go              # Run application
-go test -v -cover ./...  # Run go test
+# Terminal 2
+go run github.com/99designs/gqlgen -v # Generate Graphql stuff
+swag init -g app/app.go               # Generates Swagger
+go run *.go                           # Run application
+go test -v -cover ./...               # Run go test
 ```
 
-See Swagger Doc `http://localhost:3000/swagger/index.html`
-
+- See Swagger Doc `http://localhost:3000/swagger/index.html`
+- See GraphQL Playground `http://localhost:3000/graphql`
 
 ### Roadmap
 
 - [ ] Admin middleware
 - [ ] Reset Password
-- [ ] Graphql endpoint
 - [ ] CI + tests
 - [ ] Badge
 - [ ] Deployment (CD) - Digital Ocean, Heroku

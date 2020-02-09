@@ -93,7 +93,9 @@ func Run() {
 	router.GET("/ping", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
 
 	router.GET("/graphql", gql.PlaygroundHandler("/query"))
-	router.POST("/query", gql.GraphqlHandler())
+	router.POST("/query",
+		middlewares.SetUserContext(config.JWTSecret),
+		gql.GraphqlHandler(userService, authService))
 
 	api := router.Group("/api")
 
