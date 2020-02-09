@@ -7,6 +7,7 @@ import (
 	"go_api_boilerplate/services/user_service"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -58,131 +59,174 @@ func NewUserController(us user_service.UserService, as auth_service.AuthService)
 	}
 }
 
+// @Summary Register new user
+// @Produce  json
+// @Param email body string true "Email"
+// @Param password body string true "Password"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 500 {object} Response
+// @Router /api/register [post]
 func (ctl *userController) Register(c *gin.Context) {
 	// Read user input
 	var userInput UserInput
 	if err := c.ShouldBindJSON(&userInput); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		HttpRes(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 	u := ctl.inputToUser(userInput)
 
 	// Create user
 	if err := ctl.us.Create(&u); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
 	// Login
 	err := ctl.login(c, &u)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 }
 
+// @Summary Login
+// @Produce  json
+// @Param email body string true "Email"
+// @Param password body string true "Password"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 500 {object} Response
+// @Router /api/login [post]
 func (ctl *userController) Login(c *gin.Context) {
 	// Read user input
 	var userInput UserInput
 	if err := c.ShouldBindJSON(&userInput); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		HttpRes(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	// Get user from DB
 	user, err := ctl.us.GetByEmail(userInput.Email)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
 	// Check password
 	err = ctl.us.ComparePassword(userInput.Password, user.Password)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		HttpRes(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	// Login
 	err = ctl.login(c, user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 }
 
+// @Summary Get user info of given id
+// @Produce  json
+// @Param id path int true "ID"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 500 {object} Response
+// @Router /api/users/{id} [get]
 func (ctl *userController) GetByID(c *gin.Context) {
 	id, err := ctl.getUserID(c.Param(("id")))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		HttpRes(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	user, err := ctl.us.GetByID(id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		es := err.Error()
+		if strings.Contains(es, "not found") {
+			HttpRes(c, http.StatusNotFound, es, nil)
+			return
+		}
+		HttpRes(c, http.StatusInternalServerError, es, nil)
 		return
 	}
 	userOutput := ctl.mapToUserOutput(user)
-	c.JSON(http.StatusOK, userOutput)
+	HttpRes(c, http.StatusOK, "ok", userOutput)
 }
 
 // @Summary Get user info of the logged in user
 // @Produce  json
-// @Success 200 {object} UserOutput
-// @Failure 500 {object} ErrorResponse
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 500 {object} Response
 // @Router /api/account/profile [get]
 func (ctl *userController) GetProfile(c *gin.Context) {
 	id, exists := c.Get("user_id")
 	if exists == false {
-		c.JSON(http.StatusInternalServerError, errors.New("Invalid User ID"))
+		HttpRes(c, http.StatusBadRequest, "Invalid User ID", nil)
 		return
 	}
 
 	user, err := ctl.us.GetByID(id.(uint))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 	userOutput := ctl.mapToUserOutput(user)
-	c.JSON(http.StatusOK, userOutput)
+	HttpRes(c, http.StatusOK, "ok", userOutput)
 }
 
+// @Summary Update account profile
+// @Produce  json
+// @Param email body string true "Email"
+// @Param firstName body string false "First Name"
+// @Param lastName body string false "Last Name"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 500 {object} Response
+// @Router /api/account/profile [put]
 func (ctl *userController) Update(c *gin.Context) {
+	// Get user id from context
 	id, exists := c.Get("user_id")
 	if exists == false {
-		c.JSON(http.StatusInternalServerError, errors.New("Invalid User ID"))
+		HttpRes(c, http.StatusBadRequest, "Invalid User ID", nil)
 		return
 	}
 
+	// Retrieve user given id
 	user, err := ctl.us.GetByID(id.(uint))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
 	// Read user input
 	var userInput UserUpdateInput
 	if err := c.ShouldBindJSON(&userInput); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		HttpRes(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
+	// Check user
 	if user.ID != id {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": errors.New("Unauthorized")})
+		HttpRes(c, http.StatusUnauthorized, "Unauthorized", nil)
 		return
 	}
 
+	// Update user record
 	user.FirstName = userInput.FirstName
 	user.LastName = userInput.LastName
 	user.Email = userInput.Email
-
 	if err := ctl.us.Update(user); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		HttpRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
+
+	// Response
 	userOutput := ctl.mapToUserOutput(user)
-	c.JSON(http.StatusOK, userOutput)
+	HttpRes(c, http.StatusOK, "ok", userOutput)
 }
 
 func (ctl *userController) ForgotPassword(c *gin.Context) {}
@@ -226,11 +270,6 @@ func (ctl *userController) login(c *gin.Context, u *user.User) error {
 		return err
 	}
 	userOutput := ctl.mapToUserOutput(u)
-
-	// Return user info + token
-	c.JSON(http.StatusOK, gin.H{
-		"token": token,
-		"user":  userOutput,
-	})
+	HttpRes(c, http.StatusOK, "ok", gin.H{"token": token, "user": userOutput})
 	return nil
 }
