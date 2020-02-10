@@ -31,14 +31,14 @@ go test -v -cover ./...               # Run go test
 
 ### Roadmap
 
-- [ ] Admin middleware
-- [ ] Reset Password
-- [ ] CI + tests
-- [ ] Badge
-- [ ] Deployment (CD) - Digital Ocean, Heroku
-- [ ] Directory README and diagrams
+- [ ] Travis CI
+- [ ] Badges
+- [ ] AuthService unit tests
+- [ ] Middleware unit tests
+- [ ] Controller unit tests
+- [ ] Sending Email on registration
+- [ ] Forgot password (email notification), and reset password
 
----
 maybe
 
 - [ ] gRPC
