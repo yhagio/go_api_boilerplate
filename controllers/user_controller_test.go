@@ -64,6 +64,7 @@ func TestUserController(t *testing.T) {
 	router.GET("/users/:id", userCtl.GetByID)
 	router.GET("/profile", userCtl.GetProfile)
 
+	// Using router version
 	t.Run("GetByID", func(t *testing.T) {
 		// Test user
 		user1 := &user.User{
@@ -98,6 +99,7 @@ func TestUserController(t *testing.T) {
 		assert.EqualValues(t, expectedResBody.Data, resBody.Data)
 	})
 
+	// Without using router version
 	t.Run("GetProfile", func(t *testing.T) {
 		// Test user
 		user1 := &user.User{
