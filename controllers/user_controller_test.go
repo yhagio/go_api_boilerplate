@@ -59,8 +59,10 @@ func TestUserController(t *testing.T) {
 	us := userservice.NewUserService(ur, "pepper")
 	as := authservice.NewAuthService("jwt-secret")
 	userCtl := NewUserController(us, as)
+	gin.SetMode(gin.TestMode)
 	router := gin.Default()
 	router.GET("/users/:id", userCtl.GetByID)
+	router.GET("/profile", userCtl.GetProfile)
 
 	t.Run("GetByID", func(t *testing.T) {
 		// Test user
@@ -76,6 +78,44 @@ func TestUserController(t *testing.T) {
 
 		// Make HTTP Request to the testing endpoint
 		w := performRequest(router, "GET", "/users/1")
+
+		// Check statusCode
+		assert.Equal(t, http.StatusOK, w.Code)
+
+		// JSON to struct
+		resBody := output{}
+		json.NewDecoder(w.Body).Decode(&resBody)
+
+		// Expected HTTP Response body structure
+		expectedResBody := Response{
+			Code: http.StatusOK,
+			Msg:  "ok",
+			Data: *user1,
+		}
+
+		assert.EqualValues(t, expectedResBody.Code, resBody.Code)
+		assert.EqualValues(t, expectedResBody.Msg, resBody.Msg)
+		assert.EqualValues(t, expectedResBody.Data, resBody.Data)
+	})
+
+	t.Run("GetProfile", func(t *testing.T) {
+		// Test user
+		user1 := &user.User{
+			Email:     "alice@cc.cc",
+			FirstName: "",
+			LastName:  "",
+			Active:    true,
+			Role:      "standard",
+		}
+		// Stub UserService.GetByID func call
+		ur.On("GetByID", uint(1)).Return(user1, nil)
+
+		// Mock HTTP Request to the testing endpoint
+		w := httptest.NewRecorder()
+		c, _ := gin.CreateTestContext(w)
+		c.Set("user_id", uint(1))
+
+		userCtl.GetProfile(c)
 
 		// Check statusCode
 		assert.Equal(t, http.StatusOK, w.Code)
