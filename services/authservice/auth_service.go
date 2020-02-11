@@ -55,7 +55,7 @@ func (auth *authService) ParseToken(token string) (*Claims, error) {
 		token,
 		&Claims{},
 		func(token *jwt.Token) (interface{}, error) {
-			return auth.jwtSecret, nil
+			return []byte(auth.jwtSecret), nil
 		},
 	)
 

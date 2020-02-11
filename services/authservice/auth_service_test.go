@@ -61,13 +61,11 @@ func TestToken(t *testing.T) {
 		assert.Nil(t, err)
 		assert.IsType(t, "string", token)
 
-		// claims, err := svc.ParseToken(token)
-		// assert.EqualValues(t, nil, err.Error())
-		// assert.Nil(t, err)
-		// assert.NotNil(t, claims)
+		claims, err := svc.ParseToken(token)
+		assert.Nil(t, err)
+		assert.NotNil(t, claims)
 
-		// assert.EqualValues(t, user, claims)
-		// assert.EqualValues(t, user.ID, &claims.ID)
-		// assert.EqualValues(t, u.Email, claims.Email)
+		assert.EqualValues(t, u.ID, claims.ID)
+		assert.EqualValues(t, u.Email, claims.Email)
 	})
 }
