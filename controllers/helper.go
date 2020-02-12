@@ -1,6 +1,8 @@
 package controllers
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 // Response object as HTTP response
 type Response struct {

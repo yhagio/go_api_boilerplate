@@ -37,9 +37,6 @@ go test -v -cover ./...               # Run go test
 
 - [ ] Travis CI
 - [ ] Badges
-- [ ] AuthService unit tests
-- [ ] Middleware unit tests
-- [ ] Controller unit tests
 - [ ] Sending Email on registration
 - [ ] Forgot password (email notification), and reset password
 

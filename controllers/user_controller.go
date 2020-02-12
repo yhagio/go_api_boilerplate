@@ -270,6 +270,7 @@ func (ctl *userController) login(c *gin.Context, u *user.User) error {
 		return err
 	}
 	userOutput := ctl.mapToUserOutput(u)
-	HTTPRes(c, http.StatusOK, "ok", gin.H{"token": token, "user": userOutput})
+	out := gin.H{"token": token, "user": userOutput}
+	HTTPRes(c, http.StatusOK, "ok", out)
 	return nil
 }
