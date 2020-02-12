@@ -101,8 +101,8 @@ func Run() {
 
 	api.POST("/register", userCtl.Register)
 	api.POST("/login", userCtl.Login)
-	api.POST("/forgot_password", userCtl.ForgotPassword)
-	api.POST("/reset_password", userCtl.ResetPassword)
+	api.POST("/forgot_password", userCtl.ForgotPassword) // TODO
+	api.POST("/reset_password", userCtl.ResetPassword)   // TODO
 
 	user := api.Group("/users")
 

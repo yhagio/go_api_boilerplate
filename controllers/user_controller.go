@@ -229,8 +229,10 @@ func (ctl *userController) Update(c *gin.Context) {
 	HTTPRes(c, http.StatusOK, "ok", userOutput)
 }
 
+// TODO
 func (ctl *userController) ForgotPassword(c *gin.Context) {}
 
+// TODO
 func (ctl *userController) ResetPassword(c *gin.Context) {}
 
 /*******************************/
