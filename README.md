@@ -4,6 +4,9 @@
 
 # Go (Golang) REST / GraphQL API Boilerplate
 
+
+
+
 **Used libraries:**
 - [gin](https://github.com/gin-gonic)
 - [gin-swagger](https://github.com/swaggo/gin-swagger)
@@ -31,7 +34,14 @@ go test -v -cover ./...               # Run go test
 ```
 
 - See Swagger Doc `http://localhost:3000/swagger/index.html`
+
+![swagger image](./docs/swagger.png)
+
 - See GraphQL Playground `http://localhost:3000/graphql`
+
+![graphql image](./docs/graphql.png)
+
+---
 
 ### Roadmap
 
