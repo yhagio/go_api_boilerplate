@@ -1,14 +1,18 @@
 *.env
-
 .DS_Store
 
-
+# Log
 *.log
 .debug
 tmp
 
+# IDE
 .vscode
 .idea
 
+# Notes
 data
 NOTE.md
+
+# Coverage
+coverage.txt
