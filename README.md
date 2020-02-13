@@ -43,14 +43,12 @@ go test -v -cover ./...               # Run go test
 
 ---
 
-### Roadmap
+### Todo
 
-- [ ] Travis CI
-- [ ] Badges
 - [ ] Sending Email on registration
 - [ ] Forgot password (email notification), and reset password
 
-maybe
+maybe?
 
 - [ ] gRPC
 - [ ] Redis Streams
