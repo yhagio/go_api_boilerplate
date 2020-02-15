@@ -1,7 +1,6 @@
 package emailservice
 
 const (
-	// resetBaseURL   = "http://localhost:3000/api/update_password" // Change this for production
 	welcomeSubject = "Welcome!"
 	resetSubject   = "Instructions for resetting your password."
 )
@@ -29,7 +28,9 @@ const resetTextTmpl = `
 
 	It appears that you have requested a password reset. If this was you, please follow the link below to update your password:
 
-	%s
+	URL: %s
+	HTTP Verb: PUT
+	Body (JSON Payload): { "password": "your new password" }
 
 	If you are asked for a token, please use the following value:
 
@@ -42,11 +43,14 @@ const resetTextTmpl = `
 `
 
 const resetHTMLTmpl = `
-	Hi there!<br/>
+	Hello there!<br/>
 	<br/>
-	It appears that you have requested a password reset. If this was you, please follow the link below to update your password:<br/>
+	It appears that you have requested a password reset.
+	If this was you, please make REST API Request to update your password:<br/>
 	<br/>
-	<a href="%s">%s</a><br/>
+	URL: %s <br/>
+	HTTP Verb: PUT <br/>
+	Body (JSON Payload): { "password": "your new password" }<br/>
 	<br/>
 	If you are asked for a token, please use the following value:<br/>
 	<br/>

@@ -3,9 +3,6 @@
 
 # Go (Golang) REST / GraphQL API Boilerplate
 
-
-
-
 **Used libraries:**
 - [gin](https://github.com/gin-gonic)
 - [gin-swagger](https://github.com/swaggo/gin-swagger)
@@ -20,6 +17,30 @@
 
 ### Run locally
 
+Create `.env` at root, i.e.
+```sh
+MAILGUN_API_KEY=key-b9jksfh8s9843uhfsdhds
+MAILGUN_DOMAIN=xxxxx.mailgun.org
+
+EMAIL_FROM=support@go_api_boilerplate.com
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=your-user
+DB_PASSWORD=your-password
+DB_NAME=local-dev-db
+
+JWT_SIGN_KEY=secret
+HAMC_KEY=secret
+PEPPER=secret
+
+ENV=development
+
+APP_PORT=3000
+APP_HOST=http://localhost
+```
+
+Run
 ```sh
 # Terminal 1
 docker-compose up        # docker-compose up (Run postgres)
@@ -44,7 +65,6 @@ go test -v -cover ./...               # Run go test
 
 ### Todo
 
-- [ ] Forgot password (email notification), and reset password
 - [ ] Input Validations
 - [ ] Custom Error messages
 - [ ] Logger

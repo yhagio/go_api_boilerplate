@@ -6,8 +6,8 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// UserRepo interface
-type UserRepo interface {
+// Repo interface
+type Repo interface {
 	GetByID(id uint) (*user.User, error)
 	GetByEmail(email string) (*user.User, error)
 	Create(user *user.User) error
@@ -19,7 +19,7 @@ type userRepo struct {
 }
 
 // NewUserRepo will instantiate User Repository
-func NewUserRepo(db *gorm.DB) UserRepo {
+func NewUserRepo(db *gorm.DB) Repo {
 	return &userRepo{
 		db: db,
 	}

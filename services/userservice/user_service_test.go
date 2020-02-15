@@ -2,43 +2,12 @@ package userservice
 
 import (
 	"errors"
-	"github.com/yhagio/go_api_boilerplate/domain/user"
 	"testing"
 
+	"github.com/yhagio/go_api_boilerplate/domain/user"
+
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
-
-var (
-	pepper    = "pepper"
-	testID10  = uint(10)
-	testID100 = uint(100)
-	testEmail = "test@cc.cc"
-)
-
-type repoMock struct {
-	mock.Mock
-}
-
-func (repo *repoMock) GetByID(id uint) (*user.User, error) {
-	args := repo.Called(id)
-	return args.Get(0).(*user.User), args.Error(1)
-}
-
-func (repo *repoMock) GetByEmail(email string) (*user.User, error) {
-	args := repo.Called(email)
-	return args.Get(0).(*user.User), args.Error(1)
-}
-
-func (repo *repoMock) Create(user *user.User) error {
-	args := repo.Called(user)
-	return args.Error(0)
-}
-
-func (repo *repoMock) Update(user *user.User) error {
-	args := repo.Called(user)
-	return args.Error(0)
-}
 
 func TestGetByID(t *testing.T) {
 	t.Run("Get a user", func(t *testing.T) {
@@ -48,8 +17,12 @@ func TestGetByID(t *testing.T) {
 		}
 
 		userRepo := new(repoMock)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
 		userRepo.On("GetByID", testID100).Return(expected, nil)
-		u := NewUserService(userRepo, pepper)
+
 		result, _ := u.GetByID(testID100)
 
 		assert.EqualValues(t, expected, result)
@@ -59,7 +32,11 @@ func TestGetByID(t *testing.T) {
 		expected := errors.New("id param is required")
 
 		userRepo := new(repoMock)
-		u := NewUserService(userRepo, pepper)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
+
 		result, err := u.GetByID(0)
 
 		assert.Nil(t, result)
@@ -70,8 +47,12 @@ func TestGetByID(t *testing.T) {
 		expected := errors.New("Nop")
 
 		userRepo := new(repoMock)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
 		userRepo.On("GetByID", testID10).Return(&user.User{}, expected)
-		u := NewUserService(userRepo, pepper)
+
 		result, err := u.GetByID(testID10)
 
 		assert.Nil(t, result)
@@ -87,8 +68,12 @@ func TestGetByEmail(t *testing.T) {
 		}
 
 		userRepo := new(repoMock)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
 		userRepo.On("GetByEmail", testEmail).Return(expected, nil)
-		u := NewUserService(userRepo, pepper)
+
 		result, _ := u.GetByEmail(testEmail)
 
 		assert.EqualValues(t, expected, result)
@@ -98,7 +83,11 @@ func TestGetByEmail(t *testing.T) {
 		expected := errors.New("email(string) is required")
 
 		userRepo := new(repoMock)
-		u := NewUserService(userRepo, pepper)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
+
 		result, err := u.GetByEmail("")
 
 		assert.Nil(t, result)
@@ -109,8 +98,12 @@ func TestGetByEmail(t *testing.T) {
 		expected := errors.New("Nop")
 
 		userRepo := new(repoMock)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
 		userRepo.On("GetByEmail", testEmail).Return(&user.User{}, expected)
-		u := NewUserService(userRepo, pepper)
+
 		result, err := u.GetByEmail(testEmail)
 
 		assert.Nil(t, result)
@@ -126,8 +119,12 @@ func TestCreate(t *testing.T) {
 		}
 
 		userRepo := new(repoMock)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
 		userRepo.On("Create", usr).Return(nil)
-		u := NewUserService(userRepo, pepper)
+
 		result := u.Create(usr)
 
 		assert.Nil(t, result)
@@ -140,8 +137,12 @@ func TestCreate(t *testing.T) {
 		}
 
 		userRepo := new(repoMock)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
+
 		userRepo.On("Create", usr).Return(err)
-		u := NewUserService(userRepo, pepper)
 		result := u.Create(usr)
 
 		assert.EqualValues(t, result, err)
@@ -155,8 +156,12 @@ func TestUpdate(t *testing.T) {
 		}
 
 		userRepo := new(repoMock)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
 		userRepo.On("Update", usr).Return(nil)
-		u := NewUserService(userRepo, pepper)
+
 		result := u.Update(usr)
 
 		assert.Nil(t, result)
@@ -169,8 +174,12 @@ func TestUpdate(t *testing.T) {
 		}
 
 		userRepo := new(repoMock)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
 		userRepo.On("Update", usr).Return(err)
-		u := NewUserService(userRepo, pepper)
+
 		result := u.Update(usr)
 
 		assert.EqualValues(t, result, err)
@@ -182,7 +191,11 @@ func TestComparePassword(t *testing.T) {
 		testPass := "test123"
 
 		userRepo := new(repoMock)
-		u := NewUserService(userRepo, pepper)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
+
 		hashedPass, err := u.HashPassword(testPass)
 		err = u.ComparePassword(testPass, hashedPass)
 		assert.Nil(t, err)
@@ -192,7 +205,11 @@ func TestComparePassword(t *testing.T) {
 		testPass := "test123"
 
 		userRepo := new(repoMock)
-		u := NewUserService(userRepo, pepper)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
+
 		hashedPass, err := u.HashPassword(testPass)
 		err = u.ComparePassword("test1234", hashedPass)
 		assert.NotNil(t, err)

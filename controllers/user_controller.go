@@ -249,18 +249,62 @@ func (ctl *userController) Update(c *gin.Context) {
 // @Failure 400 {object} Response
 // @Failure 500 {object} Response
 // @Router /api/forgot_password [post]
-func (ctl *userController) ForgotPassword(c *gin.Context) {}
+func (ctl *userController) ForgotPassword(c *gin.Context) {
+	var input UserInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		HTTPRes(c, http.StatusBadRequest, err.Error(), nil)
+		return
+	}
+
+	// Issue token for user to update his/her password
+	token, err := ctl.us.InitiateResetPassowrd(input.Email)
+	if err != nil {
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	// Send email with token to update password
+	if err = ctl.es.ResetPassword(input.Email, token); err != nil {
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+	HTTPRes(c, http.StatusOK, "Email sent", nil)
+	return
+}
 
 // @Summary Update user's password
 // @Produce  json
-// @Param email body string true "Email"
 // @Param password body string true "Password"
 // @Param token query string true "Token"
 // @Success 200 {object} Response
 // @Failure 400 {object} Response
 // @Failure 500 {object} Response
 // @Router /api/update_password [post]
-func (ctl *userController) ResetPassword(c *gin.Context) {}
+func (ctl *userController) ResetPassword(c *gin.Context) {
+	var input UserInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		HTTPRes(c, http.StatusBadRequest, err.Error(), nil)
+		return
+	}
+
+	token := c.Request.URL.Query().Get("token")
+	if token == "" {
+		HTTPRes(c, http.StatusNotFound, "Requires token", nil)
+		return
+	}
+
+	user, err := ctl.us.CompleteUpdatePassword(token, input.Password)
+	if err != nil {
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	err = ctl.login(c, user)
+	if err != nil {
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+}
 
 /*******************************/
 //       PRIVATE METHODS

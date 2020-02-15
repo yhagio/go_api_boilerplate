@@ -39,6 +39,14 @@ func (us *userSvc) ComparePassword(rawPassword string, passwordFromDB string) er
 	return nil
 }
 
+func (us *userSvc) InitiateResetPassowrd(email string) (string, error) {
+	return "token", nil
+}
+
+func (us *userSvc) CompleteUpdatePassword(token, newPassword string) (*user.User, error) {
+	return sampleUser, nil
+}
+
 type authSvc struct {
 	jwtSecret string
 }

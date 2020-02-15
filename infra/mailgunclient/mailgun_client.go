@@ -48,14 +48,15 @@ func (mg *mailgunClient) ResetPassword(subject, text, to, htmlStr, token string)
 	v := url.Values{}
 	v.Set("token", token)
 
-	resetURL := mg.getURL() + "api/update_password" + v.Encode()
-	resetText := fmt.Sprintf(htmlStr, resetURL, token)
+	resetURL := mg.getURL() + "/api/update_password?" + v.Encode()
+	resetText := fmt.Sprintf(text, resetURL, token)
+	resetHTML := fmt.Sprintf(htmlStr, resetURL, token)
 	message := mg.createNewMessage(
 		mg.conf.FromEmail,
 		subject,
 		resetText,
 		to,
-		htmlStr,
+		resetHTML,
 	)
 
 	ctx, cancel := mg.setContext(10)
@@ -66,11 +67,7 @@ func (mg *mailgunClient) ResetPassword(subject, text, to, htmlStr, token string)
 // ========= Private methods =========
 
 func (mg *mailgunClient) getURL() string {
-	http := "http"
-	if mg.conf.IsProd() == true {
-		http = "https"
-	}
-	url := http + mg.conf.Host + mg.conf.Port
+	url := mg.conf.Host + ":" + mg.conf.Port
 	return url
 }
 
