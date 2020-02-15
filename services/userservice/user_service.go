@@ -2,8 +2,8 @@ package userservice
 
 import (
 	"errors"
-	"go_api_boilerplate/domain/user"
-	"go_api_boilerplate/repositories/userrepo"
+	"github.com/yhagio/go_api_boilerplate/domain/user"
+	"github.com/yhagio/go_api_boilerplate/repositories/userrepo"
 
 	"golang.org/x/crypto/bcrypt"
 )

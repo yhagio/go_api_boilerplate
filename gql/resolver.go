@@ -1,9 +1,9 @@
 package gql
 
 import (
-	"go_api_boilerplate/gql/gen"
-	"go_api_boilerplate/services/authservice"
-	"go_api_boilerplate/services/userservice"
+	"github.com/yhagio/go_api_boilerplate/gql/gen"
+	"github.com/yhagio/go_api_boilerplate/services/authservice"
+	"github.com/yhagio/go_api_boilerplate/services/userservice"
 )
 
 // Resolver struct

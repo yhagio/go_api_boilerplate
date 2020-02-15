@@ -3,7 +3,7 @@ package gql
 import (
 	"context"
 	"errors"
-	"go_api_boilerplate/gql/gen"
+	"github.com/yhagio/go_api_boilerplate/gql/gen"
 )
 
 func (r *queryResolver) User(ctx context.Context, id int) (*gen.User, error) {

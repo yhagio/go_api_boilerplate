@@ -3,8 +3,8 @@ package gql
 import (
 	"context"
 	"errors"
-	"go_api_boilerplate/domain/user"
-	"go_api_boilerplate/gql/gen"
+	"github.com/yhagio/go_api_boilerplate/domain/user"
+	"github.com/yhagio/go_api_boilerplate/gql/gen"
 )
 
 func (r *mutationResolver) Login(ctx context.Context, input gen.RegisterLogin) (*gen.RegisterLoginOutput, error) {

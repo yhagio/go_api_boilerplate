@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"go_api_boilerplate/controllers"
+	"github.com/yhagio/go_api_boilerplate/controllers"
 	"net/http"
 	"strings"
 

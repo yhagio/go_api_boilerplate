@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/yhagio/go_api_boilerplate.svg?branch=master)](https://travis-ci.org/yhagio/go_api_boilerplate.svg?branch=master)
-[![codecov](https://codecov.io/gh/yhagio/go_api_boilerplate/branch/master/graph/badge.svg)](https://codecov.io/gh/yhagio/go_api_boilerplate)
+[![codecov](https://codecov.io/gh/yhagio/github.com/yhagio/go_api_boilerplate/branch/master/graph/badge.svg)](https://codecov.io/gh/yhagio/go_api_boilerplate)
 
 
 # Go (Golang) REST / GraphQL API Boilerplate

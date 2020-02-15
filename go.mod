@@ -1,4 +1,4 @@
-module go_api_boilerplate
+module github.com/yhagio/go_api_boilerplate
 
 go 1.13
 
@@ -12,6 +12,8 @@ require (
 	github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e // indirect
 	github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
+	github.com/facebookgo/ensure v0.0.0-20200202191622-63f1cf65ac4c // indirect
+	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/federicoleon/bookstore_utils-go v0.0.0-20191115214654-f8b94f132ebf
 	github.com/gin-gonic/gin v1.5.0
 	github.com/go-openapi/spec v0.19.6 // indirect
@@ -28,7 +30,7 @@ require (
 	github.com/jonboulle/clockwork v0.1.0 // indirect
 	github.com/lib/pq v1.3.0
 	github.com/magiconair/properties v1.8.1 // indirect
-	github.com/mailru/easyjson v0.7.0 // indirect
+	github.com/mailgun/mailgun-go/v4 v4.0.0
 	github.com/prometheus/client_golang v0.9.3 // indirect
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/soheilhy/cmux v0.1.4 // indirect
@@ -52,5 +54,6 @@ require (
 	google.golang.org/grpc v1.21.0 // indirect
 	gopkg.in/dgrijalva/jwt-go.v3 v3.2.0
 	gopkg.in/ini.v1 v1.51.0 // indirect
+	gopkg.in/mailgun/mailgun-go.v1 v1.1.1
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

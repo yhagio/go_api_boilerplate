@@ -1,7 +1,7 @@
 package userrepo
 
 import (
-	"go_api_boilerplate/domain/user"
+	"github.com/yhagio/go_api_boilerplate/domain/user"
 
 	"github.com/jinzhu/gorm"
 )

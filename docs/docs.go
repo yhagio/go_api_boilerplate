@@ -27,7 +27,7 @@ var doc = `{
         },
         "license": {
             "name": "MIT",
-            "url": "https://github.com/yhagio/go_api_boilerplate/blob/master/LICENSE"
+            "url": "https://github.com/yhagio/github.com/yhagio/go_api_boilerplate/blob/master/LICENSE"
         },
         "version": "{{.Version}}"
     },

@@ -2,7 +2,7 @@ package userservice
 
 import (
 	"errors"
-	"go_api_boilerplate/domain/user"
+	"github.com/yhagio/go_api_boilerplate/domain/user"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

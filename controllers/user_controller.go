@@ -2,12 +2,14 @@ package controllers
 
 import (
 	"errors"
-	"go_api_boilerplate/domain/user"
-	"go_api_boilerplate/services/authservice"
-	"go_api_boilerplate/services/userservice"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/yhagio/go_api_boilerplate/domain/user"
+	"github.com/yhagio/go_api_boilerplate/services/authservice"
+	"github.com/yhagio/go_api_boilerplate/services/emailservice"
+	"github.com/yhagio/go_api_boilerplate/services/userservice"
 
 	"github.com/gin-gonic/gin"
 )
@@ -49,13 +51,18 @@ type UserController interface {
 type userController struct {
 	us userservice.UserService
 	as authservice.AuthService
+	es emailservice.EmailService
 }
 
 // NewUserController instantiates User Controller
-func NewUserController(us userservice.UserService, as authservice.AuthService) UserController {
+func NewUserController(
+	us userservice.UserService,
+	as authservice.AuthService,
+	es emailservice.EmailService) UserController {
 	return &userController{
 		us: us,
 		as: as,
+		es: es,
 	}
 }
 
@@ -78,6 +85,12 @@ func (ctl *userController) Register(c *gin.Context) {
 
 	// Create user
 	if err := ctl.us.Create(&u); err != nil {
+		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	// Send welcome email
+	if err := ctl.es.Welcome(u.Email); err != nil {
 		HTTPRes(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
@@ -229,10 +242,24 @@ func (ctl *userController) Update(c *gin.Context) {
 	HTTPRes(c, http.StatusOK, "ok", userOutput)
 }
 
-// TODO
+// @Summary Sends token to user's email to update user's password
+// @Produce  json
+// @Param email body string true "Email"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 500 {object} Response
+// @Router /api/forgot_password [post]
 func (ctl *userController) ForgotPassword(c *gin.Context) {}
 
-// TODO
+// @Summary Update user's password
+// @Produce  json
+// @Param email body string true "Email"
+// @Param password body string true "Password"
+// @Param token query string true "Token"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 500 {object} Response
+// @Router /api/update_password [post]
 func (ctl *userController) ResetPassword(c *gin.Context) {}
 
 /*******************************/

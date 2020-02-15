@@ -3,7 +3,7 @@ package userrepo
 import (
 	"database/sql/driver"
 	"errors"
-	"go_api_boilerplate/domain/user"
+	"github.com/yhagio/go_api_boilerplate/domain/user"
 	"log"
 	"regexp"
 	"testing"

@@ -1,8 +1,8 @@
 package middlewares
 
 import (
-	"go_api_boilerplate/domain/user"
-	"go_api_boilerplate/services/authservice"
+	"github.com/yhagio/go_api_boilerplate/domain/user"
+	"github.com/yhagio/go_api_boilerplate/services/authservice"
 	"net/http"
 	"net/http/httptest"
 

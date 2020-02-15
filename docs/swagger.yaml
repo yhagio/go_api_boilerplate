@@ -18,7 +18,7 @@ info:
   description: This is Go API Boilerplate
   license:
     name: MIT
-    url: https://github.com/yhagio/go_api_boilerplate/blob/master/LICENSE
+    url: https://github.com/yhagio/github.com/yhagio/go_api_boilerplate/blob/master/LICENSE
   termsOfService: http://swagger.io/terms/
   title: Go API Boilerplate Swagger
   version: "1.0"

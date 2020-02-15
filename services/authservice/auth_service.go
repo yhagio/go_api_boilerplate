@@ -1,7 +1,7 @@
 package authservice
 
 import (
-	"go_api_boilerplate/domain/user"
+	"github.com/yhagio/go_api_boilerplate/domain/user"
 	"time"
 
 	jwt "gopkg.in/dgrijalva/jwt-go.v3"

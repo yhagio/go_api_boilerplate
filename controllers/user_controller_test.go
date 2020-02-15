@@ -3,61 +3,17 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
-	"go_api_boilerplate/domain/user"
-	"go_api_boilerplate/services/authservice"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/yhagio/go_api_boilerplate/domain/user"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
-type userSvc struct{}
-
-var sampleUser = &user.User{
-	Email:     "alice@cc.cc",
-	FirstName: "",
-	LastName:  "",
-	Active:    false,
-	Role:      "",
-}
-
-func (us *userSvc) GetByID(id uint) (*user.User, error) {
-	return sampleUser, nil
-}
-
-func (us *userSvc) GetByEmail(email string) (*user.User, error) {
-	return sampleUser, nil
-}
-
-func (us *userSvc) Create(user *user.User) error {
-	return nil
-}
-
-func (us *userSvc) Update(user *user.User) error {
-	return nil
-}
-
-func (us *userSvc) HashPassword(rawPassword string) (string, error) {
-	return rawPassword, nil
-}
-
-func (us *userSvc) ComparePassword(rawPassword string, passwordFromDB string) error {
-	return nil
-}
-
-type authSvc struct {
-	jwtSecret string
-}
-
-func (auth *authSvc) IssueToken(u user.User) (string, error) {
-	return "nice-token", nil
-}
-
-func (auth *authSvc) ParseToken(token string) (*authservice.Claims, error) {
-	return nil, nil
-}
+// NOTE: Mocked services are in './user_controller_setup_test.go'
 
 // Output of HTTP Response Body structure
 type output struct {
@@ -84,7 +40,8 @@ func TestUserController(t *testing.T) {
 	// Setup router + user controller
 	us := &userSvc{}
 	as := &authSvc{"jwt-secret"}
-	userCtl := NewUserController(us, as)
+	es := &emailSvc{}
+	userCtl := NewUserController(us, as, es)
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
 	router.GET("/users/:id", userCtl.GetByID)
