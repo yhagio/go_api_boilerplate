@@ -3,7 +3,10 @@ package userservice
 import (
 	"errors"
 	"testing"
+	"time"
 
+	"github.com/jinzhu/gorm"
+	"github.com/yhagio/go_api_boilerplate/domain/passwordreset"
 	"github.com/yhagio/go_api_boilerplate/domain/user"
 
 	"github.com/stretchr/testify/assert"
@@ -213,5 +216,67 @@ func TestComparePassword(t *testing.T) {
 		hashedPass, err := u.HashPassword(testPass)
 		err = u.ComparePassword("test1234", hashedPass)
 		assert.NotNil(t, err)
+	})
+}
+
+func TestInitiateResetPassowrd(t *testing.T) {
+	t.Run("Issue token and create reset password record", func(t *testing.T) {
+		testUser := &user.User{
+			Model:     gorm.Model{ID: uint(1)},
+			FirstName: "Test",
+			LastName:  "User",
+			Email:     "alice@cc.cc",
+		}
+
+		testPwd := &passwordreset.PasswordReset{
+			UserID: testUser.ID,
+			Token:  "tokenhashed",
+		}
+
+		userRepo := new(repoMock)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
+
+		userRepo.On("GetByEmail", testUser.Email).Return(testUser, nil)
+		pwdRepo.On("Create", testPwd).Return(nil)
+
+		token, err := u.InitiateResetPassowrd(testUser.Email)
+		assert.EqualValues(t, "token", token)
+		assert.Nil(t, err)
+	})
+}
+
+func TestCompleteUpdatePassword(t *testing.T) {
+	t.Run("Update password and delete reset password record", func(t *testing.T) {
+		testUser := &user.User{
+			Model:     gorm.Model{ID: uint(1)},
+			FirstName: "Test",
+			LastName:  "User",
+			Email:     "alice@cc.cc",
+			Password:  "old-pass",
+		}
+
+		testPwd := &passwordreset.PasswordReset{
+			Model:  gorm.Model{CreatedAt: time.Now()},
+			UserID: testUser.ID,
+			Token:  "tokenhashed",
+		}
+
+		userRepo := new(repoMock)
+		pwdRepo := new(pwdRepoMock)
+		rds := &rdm{}
+		h := &hmacMock{}
+		u := NewUserService(userRepo, pwdRepo, rds, h, pepper)
+
+		pwdRepo.On("GetOneByToken", "tokenhashed").Return(testPwd, nil)
+		userRepo.On("GetByID", testUser.ID).Return(testUser, nil)
+		userRepo.On("Update", testUser).Return(nil)
+		pwdRepo.On("Delete", testPwd.ID).Return(nil)
+
+		result, err := u.CompleteUpdatePassword("token", "new-pass")
+		assert.EqualValues(t, testUser, result)
+		assert.Nil(t, err)
 	})
 }

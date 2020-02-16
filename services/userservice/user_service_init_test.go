@@ -62,7 +62,7 @@ func (rd *rdm) GenerateToken() (string, error) {
 	return "token", nil
 }
 func (rd *rdm) NumberOfBytes(base64String string) (int, error) {
-	return 1, nil
+	return 44, nil
 }
 
 type hmacMock struct{}
