@@ -1,4 +1,4 @@
-basePath: /api
+basePath: /
 definitions:
   controllers.Response:
     properties:
@@ -75,6 +75,31 @@ paths:
           schema:
             $ref: '#/definitions/controllers.Response'
       summary: Update account profile
+  /api/forgot_password:
+    post:
+      parameters:
+      - description: Email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Sends token to user's email to update user's password
   /api/login:
     post:
       parameters:
@@ -137,6 +162,36 @@ paths:
           schema:
             $ref: '#/definitions/controllers.Response'
       summary: Register new user
+  /api/update_password:
+    post:
+      parameters:
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: Token
+        in: query
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Update user's password
   /api/users/{id}:
     get:
       parameters:

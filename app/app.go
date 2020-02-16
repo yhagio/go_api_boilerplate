@@ -51,7 +51,7 @@ var (
 // @license.url https://github.com/yhagio/github.com/yhagio/go_api_boilerplate/blob/master/LICENSE
 
 // @host localhost:3000
-// @BasePath /api
+// @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header

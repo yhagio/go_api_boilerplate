@@ -319,7 +319,7 @@ func (ec *executionContext) field_Mutation_login_args(ctx context.Context, rawAr
 	args := map[string]interface{}{}
 	var arg0 RegisterLogin
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNRegisterLogin2go_api_boilerplateᚋgqlᚋgenᚐRegisterLogin(ctx, tmp)
+		arg0, err = ec.unmarshalNRegisterLogin2githubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐRegisterLogin(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -333,7 +333,7 @@ func (ec *executionContext) field_Mutation_register_args(ctx context.Context, ra
 	args := map[string]interface{}{}
 	var arg0 RegisterLogin
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNRegisterLogin2go_api_boilerplateᚋgqlᚋgenᚐRegisterLogin(ctx, tmp)
+		arg0, err = ec.unmarshalNRegisterLogin2githubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐRegisterLogin(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -347,7 +347,7 @@ func (ec *executionContext) field_Mutation_updateUser_args(ctx context.Context, 
 	args := map[string]interface{}{}
 	var arg0 UpdateUser
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNUpdateUser2go_api_boilerplateᚋgqlᚋgenᚐUpdateUser(ctx, tmp)
+		arg0, err = ec.unmarshalNUpdateUser2githubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐUpdateUser(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -461,7 +461,7 @@ func (ec *executionContext) _Mutation_register(ctx context.Context, field graphq
 	res := resTmp.(*RegisterLoginOutput)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNRegisterLoginOutput2ᚖgo_api_boilerplateᚋgqlᚋgenᚐRegisterLoginOutput(ctx, field.Selections, res)
+	return ec.marshalNRegisterLoginOutput2ᚖgithubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐRegisterLoginOutput(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_login(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -505,7 +505,7 @@ func (ec *executionContext) _Mutation_login(ctx context.Context, field graphql.C
 	res := resTmp.(*RegisterLoginOutput)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNRegisterLoginOutput2ᚖgo_api_boilerplateᚋgqlᚋgenᚐRegisterLoginOutput(ctx, field.Selections, res)
+	return ec.marshalNRegisterLoginOutput2ᚖgithubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐRegisterLoginOutput(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -549,7 +549,7 @@ func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field grap
 	res := resTmp.(*User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2ᚖgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_user(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -593,7 +593,7 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	res := resTmp.(*User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2ᚖgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_userProfile(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -630,7 +630,7 @@ func (ec *executionContext) _Query_userProfile(ctx context.Context, field graphq
 	res := resTmp.(*User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2ᚖgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -779,7 +779,7 @@ func (ec *executionContext) _RegisterLoginOutput_user(ctx context.Context, field
 	res := resTmp.(*User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2ᚖgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *User) (ret graphql.Marshaler) {
@@ -2673,15 +2673,15 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return res
 }
 
-func (ec *executionContext) unmarshalNRegisterLogin2go_api_boilerplateᚋgqlᚋgenᚐRegisterLogin(ctx context.Context, v interface{}) (RegisterLogin, error) {
+func (ec *executionContext) unmarshalNRegisterLogin2githubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐRegisterLogin(ctx context.Context, v interface{}) (RegisterLogin, error) {
 	return ec.unmarshalInputRegisterLogin(ctx, v)
 }
 
-func (ec *executionContext) marshalNRegisterLoginOutput2go_api_boilerplateᚋgqlᚋgenᚐRegisterLoginOutput(ctx context.Context, sel ast.SelectionSet, v RegisterLoginOutput) graphql.Marshaler {
+func (ec *executionContext) marshalNRegisterLoginOutput2githubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐRegisterLoginOutput(ctx context.Context, sel ast.SelectionSet, v RegisterLoginOutput) graphql.Marshaler {
 	return ec._RegisterLoginOutput(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNRegisterLoginOutput2ᚖgo_api_boilerplateᚋgqlᚋgenᚐRegisterLoginOutput(ctx context.Context, sel ast.SelectionSet, v *RegisterLoginOutput) graphql.Marshaler {
+func (ec *executionContext) marshalNRegisterLoginOutput2ᚖgithubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐRegisterLoginOutput(ctx context.Context, sel ast.SelectionSet, v *RegisterLoginOutput) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2705,15 +2705,15 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) unmarshalNUpdateUser2go_api_boilerplateᚋgqlᚋgenᚐUpdateUser(ctx context.Context, v interface{}) (UpdateUser, error) {
+func (ec *executionContext) unmarshalNUpdateUser2githubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐUpdateUser(ctx context.Context, v interface{}) (UpdateUser, error) {
 	return ec.unmarshalInputUpdateUser(ctx, v)
 }
 
-func (ec *executionContext) marshalNUser2go_api_boilerplateᚋgqlᚋgenᚐUser(ctx context.Context, sel ast.SelectionSet, v User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2githubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx context.Context, sel ast.SelectionSet, v User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUser2ᚖgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx context.Context, sel ast.SelectionSet, v *User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋyhagioᚋgo_api_boilerplateᚋgqlᚋgenᚐUser(ctx context.Context, sel ast.SelectionSet, v *User) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
