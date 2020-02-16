@@ -2,7 +2,6 @@ package passwordreset
 
 import (
 	"github.com/jinzhu/gorm"
-	domain "github.com/yhagio/go_api_boilerplate/domain/passwordreset"
 	pwd "github.com/yhagio/go_api_boilerplate/domain/passwordreset"
 )
 
@@ -25,7 +24,7 @@ func NewPasswordResetRepo(db *gorm.DB) Repo {
 }
 
 func (repo *pwdRepo) GetOneByToken(token string) (*pwd.PasswordReset, error) {
-	var pwr domain.PasswordReset
+	var pwr pwd.PasswordReset
 	if err := repo.db.Where("token = ?", token).First(&pwr).Error; err != nil {
 		return nil, err
 	}
@@ -37,7 +36,7 @@ func (repo *pwdRepo) Create(pwr *pwd.PasswordReset) error {
 }
 
 func (repo *pwdRepo) Delete(id uint) error {
-	pwr := domain.PasswordReset{
+	pwr := pwd.PasswordReset{
 		Model: gorm.Model{ID: id},
 	}
 	return repo.db.Delete(&pwr).Error
