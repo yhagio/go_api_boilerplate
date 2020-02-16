@@ -238,4 +238,80 @@ func TestUserController(t *testing.T) {
 
 		assert.EqualValues(t, expectedResBody, resBody)
 	})
+
+	t.Run("ForgotPassword", func(t *testing.T) {
+		reqBody := map[string]string{
+			"email": "alice@cc.cc",
+		}
+
+		// Mock HTTP Request to the testing endpoint
+		w := httptest.NewRecorder()
+		c, _ := gin.CreateTestContext(w)
+
+		// Mock Request body
+		payload, _ := json.Marshal(reqBody)
+		request := httptest.NewRequest("POST", "/forgot_password", bytes.NewBuffer(payload))
+		c.Request = request
+
+		userCtl.ForgotPassword(c)
+
+		// Check statusCode
+		assert.Equal(t, http.StatusOK, w.Code)
+
+		// Response body JSON to struct
+		resBody := Response{}
+		json.NewDecoder(w.Body).Decode(&resBody)
+
+		// Expected HTTP Response body structure
+		expectedResBody := Response{
+			Code: http.StatusOK,
+			Msg:  "Email sent",
+			Data: nil,
+		}
+
+		assert.EqualValues(t, expectedResBody, resBody)
+	})
+
+	t.Run("ResetPassword", func(t *testing.T) {
+		reqBody := map[string]string{
+			"password": "123test",
+		}
+
+		// Mock HTTP Request to the testing endpoint
+		w := httptest.NewRecorder()
+		c, _ := gin.CreateTestContext(w)
+
+		// Mock Request body
+		payload, _ := json.Marshal(reqBody)
+		request := httptest.NewRequest("POST", "/update_password?token=valid-token", bytes.NewBuffer(payload))
+		c.Request = request
+
+		userCtl.ResetPassword(c)
+
+		// Check statusCode
+		assert.Equal(t, http.StatusOK, w.Code)
+
+		// Response body JSON to struct
+		resBody := Response{}
+		json.NewDecoder(w.Body).Decode(&resBody)
+
+		// Expected HTTP Response body structure
+		expectedResBody := Response{
+			Code: http.StatusOK,
+			Msg:  "ok",
+			Data: map[string]interface{}{
+				"token": "nice-token",
+				"user": map[string]interface{}{
+					"id":        float64(0),
+					"email":     "alice@cc.cc",
+					"firstName": "alice",
+					"lastName":  "smith",
+					"role":      "",
+					"active":    false,
+				},
+			},
+		}
+
+		assert.EqualValues(t, expectedResBody, resBody)
+	})
 }
