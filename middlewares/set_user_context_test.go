@@ -1,10 +1,11 @@
 package middlewares
 
 import (
-	"github.com/yhagio/go_api_boilerplate/domain/user"
-	"github.com/yhagio/go_api_boilerplate/services/authservice"
 	"net/http"
 	"net/http/httptest"
+
+	"github.com/yhagio/go_api_boilerplate/domain/user"
+	"github.com/yhagio/go_api_boilerplate/services/authservice"
 
 	"testing"
 
@@ -16,7 +17,7 @@ func TestSetUserContextMiddleware(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
 
-	sampleUser := &user.User{
+	alice := &user.User{
 		Email:     "alice@cc.cc",
 		FirstName: "",
 		LastName:  "",
@@ -27,7 +28,7 @@ func TestSetUserContextMiddleware(t *testing.T) {
 	svc := authservice.NewAuthService("secret")
 
 	t.Run("Set context values with valid auth", func(t *testing.T) {
-		token, _ := svc.IssueToken(*sampleUser)
+		token, _ := svc.IssueToken(*alice)
 		bearerToken := "Bearer " + token
 
 		router.GET("/test1", SetUserContext("secret"), func(c *gin.Context) {
