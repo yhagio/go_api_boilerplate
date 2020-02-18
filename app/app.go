@@ -129,14 +129,14 @@ func Run() {
 	router.GET("/graphql", gql.PlaygroundHandler("/query"))
 	router.POST("/query",
 		middlewares.SetUserContext(config.JWTSecret),
-		gql.GraphqlHandler(userService, authService))
+		gql.GraphqlHandler(userService, authService, emailservice))
 
 	api := router.Group("/api")
 
 	api.POST("/register", userCtl.Register)
 	api.POST("/login", userCtl.Login)
-	api.POST("/forgot_password", userCtl.ForgotPassword) // TODO
-	api.POST("/update_password", userCtl.ResetPassword)  // TODO
+	api.POST("/forgot_password", userCtl.ForgotPassword)
+	api.POST("/update_password", userCtl.ResetPassword)
 
 	user := api.Group("/users")
 

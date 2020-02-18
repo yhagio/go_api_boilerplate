@@ -3,13 +3,15 @@ package gql
 import (
 	"github.com/yhagio/go_api_boilerplate/gql/gen"
 	"github.com/yhagio/go_api_boilerplate/services/authservice"
+	"github.com/yhagio/go_api_boilerplate/services/emailservice"
 	"github.com/yhagio/go_api_boilerplate/services/userservice"
 )
 
 // Resolver struct
 type Resolver struct {
-	UserService userservice.UserService
-	AuthService authservice.AuthService
+	UserService  userservice.UserService
+	AuthService  authservice.AuthService
+	EmailService emailservice.EmailService
 }
 
 // Mutation graphql

@@ -39,4 +39,6 @@ type Mutation {
   register(input: RegisterLogin!): RegisterLoginOutput!
   login(input: RegisterLogin!): RegisterLoginOutput!
   updateUser(input: UpdateUser!): User!
+  forgotPassword(email: String!): Boolean!
+  resetPassword(resetToken: String!, password: String!): RegisterLoginOutput!
 }
