@@ -67,6 +67,20 @@ go test -v -cover ./...               # Run go test
 
 ---
 
+### Features
+
+- [x] User Auth functionality (Signup, Login, Forgot Password, Reset Password)
+- [x] JWT Authentication
+- [x] REST API
+- [x] GraphQL API
+- [x] Gorm (Golang SQL DB ORM) with Postgres implementation and auto migration
+- [x] Configs via environmental variables
+- [x] Email notification (Welcome email, Reset password email)
+- [x] Swagger REST API documentation 
+- [x] GraphQL playground
+- [x] Unit tests
+- [x] Dependency injection
+
 ### Todo
 
 - [ ] Input Validations
