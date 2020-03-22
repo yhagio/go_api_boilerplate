@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/yhagio/go_api_boilerplate/common/hmachash"
 	"github.com/yhagio/go_api_boilerplate/common/randomstring"
@@ -67,8 +68,10 @@ func Run() {
 	/*
 		====== Setup configs ============
 	*/
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+	if os.Getenv("ENV") == "development" {
+		if err := godotenv.Load(); err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 	config := configs.GetConfig()
 
