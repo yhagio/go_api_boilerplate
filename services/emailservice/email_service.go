@@ -1,6 +1,8 @@
 package emailservice
 
 import (
+	"os"
+
 	"github.com/yhagio/go_api_boilerplate/infra/mailgunclient"
 )
 
@@ -22,9 +24,15 @@ func NewEmailService(client mailgunclient.MailgunClient) EmailService {
 }
 
 func (es *emailService) Welcome(toEmail string) error {
+	if os.Getenv("ENV") == "DEMO" {
+		return nil
+	}
 	return es.client.Welcome(welcomeSubject, welcomeText, toEmail, welcomeHTML)
 }
 
 func (es *emailService) ResetPassword(toEmail, token string) error {
+	if os.Getenv("ENV") == "DEMO" {
+		return nil
+	}
 	return es.client.ResetPassword(resetSubject, resetTextTmpl, toEmail, resetHTMLTmpl, token)
 }
