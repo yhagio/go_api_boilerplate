@@ -7,6 +7,9 @@
 
 # Go (Golang) REST / GraphQL API Boilerplate
 
+- DEMO (GraphQL Playground): https://go-gin-postgres-api.herokuapp.com/graphql
+- DEMO (REST API Swagger): https://go-gin-postgres-api.herokuapp.com/swagger/index.html
+
 **Used libraries:**
 - [gin](https://github.com/gin-gonic)
 - [gin-swagger](https://github.com/swaggo/gin-swagger)
