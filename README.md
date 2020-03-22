@@ -10,6 +10,8 @@
 - DEMO (GraphQL Playground): https://go-gin-postgres-api.herokuapp.com/graphql
 - DEMO (REST API Swagger): https://go-gin-postgres-api.herokuapp.com/swagger/index.html
 
+Note: in demo, I disabled email 
+
 **Used libraries:**
 - [gin](https://github.com/gin-gonic)
 - [gin-swagger](https://github.com/swaggo/gin-swagger)
