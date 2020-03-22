@@ -153,7 +153,6 @@ func Run() {
 	}
 
 	// Run
-	// port := fmt.Sprintf(":%s", viper.Get("APP_PORT"))
 	port := fmt.Sprintf(":%s", config.Port)
 	router.Run(port)
 }

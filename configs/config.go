@@ -34,7 +34,7 @@ func GetConfig() Config {
 		Mailgun:   GetMailgunConfig(),
 		JWTSecret: os.Getenv("JWT_SIGN_KEY"),
 		Host:      os.Getenv("APP_HOST"),
-		Port:      os.Getenv("APP_PORT"),
+		Port:      os.Getenv("PORT"), // HEROKU specific
 		FromEmail: os.Getenv("EMAIL_FROM"),
 	}
 }
