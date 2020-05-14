@@ -13,6 +13,7 @@ type Config struct {
 	HMACKey   string         `env:"HMAC_KEY"`
 	Postgres  PostgresConfig `json:"postgres"`
 	Mailgun   MailgunConfig  `json:"mailgun"`
+	MongoDB   MongoDBConfig  `json:"mongodb"`
 	JWTSecret string         `env:"JWT_SIGN_KEY"`
 	Host      string         `env:"APP_HOST"`
 	Port      string         `env:"APP_PORT"`
@@ -32,6 +33,7 @@ func GetConfig() Config {
 		HMACKey:   os.Getenv("HMAC_KEY"),
 		Postgres:  GetPostgresConfig(),
 		Mailgun:   GetMailgunConfig(),
+		MongoDB:   GetMongoDBConfig(),
 		JWTSecret: os.Getenv("JWT_SIGN_KEY"),
 		Host:      os.Getenv("APP_HOST"),
 		Port:      os.Getenv("APP_PORT"),

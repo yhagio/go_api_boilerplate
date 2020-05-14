@@ -10,6 +10,8 @@ import (
 	"github.com/yhagio/go_api_boilerplate/configs"
 	pwdDomain "github.com/yhagio/go_api_boilerplate/domain/passwordreset"
 	"github.com/yhagio/go_api_boilerplate/domain/user"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/yhagio/go_api_boilerplate/gql"
 	"github.com/yhagio/go_api_boilerplate/infra/mailgunclient"
@@ -26,6 +28,7 @@ import (
 
 	"github.com/yhagio/go_api_boilerplate/controllers"
 	"github.com/yhagio/go_api_boilerplate/repositories/passwordreset"
+	"github.com/yhagio/go_api_boilerplate/repositories/usermongorepo"
 	"github.com/yhagio/go_api_boilerplate/repositories/userrepo"
 	"github.com/yhagio/go_api_boilerplate/services/authservice"
 	"github.com/yhagio/go_api_boilerplate/services/emailservice"
@@ -81,6 +84,9 @@ func Run() {
 		panic(err)
 	}
 
+	// Connects to MongoDB
+	mongoDB, err := mongo.NewClient(options.Client().ApplyURI(config.MongoDB.URI))
+
 	// Migration
 	// db.DropTableIfExists(&user.User{})
 	db.AutoMigrate(&user.User{}, &pwdDomain.PasswordReset{})
@@ -102,6 +108,7 @@ func Run() {
 	*/
 	userRepo := userrepo.NewUserRepo(db)
 	pwdRepo := passwordreset.NewPasswordResetRepo(db)
+	userMongoRepo := usermongorepo.NewUserMongoRepo(mongoDB) // Now pass this to service
 
 	/*
 		====== Setup services ===========
