@@ -11,7 +11,7 @@ require (
 	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/gin-gonic/gin v1.7.4
 	github.com/jinzhu/gorm v1.9.16
-	github.com/joho/godotenv v1.3.0
+	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.3
 	github.com/mailgun/mailgun-go/v4 v4.5.3
 	github.com/mattn/go-sqlite3 v2.0.1+incompatible // indirect
