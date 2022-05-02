@@ -3,7 +3,7 @@ module github.com/yhagio/go_api_boilerplate
 go 1.13
 
 require (
-	github.com/99designs/gqlgen v0.17.2
+	github.com/99designs/gqlgen v0.17.5
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
@@ -24,6 +24,6 @@ require (
 	github.com/swaggo/swag v1.8.1
 	github.com/ugorji/go v1.1.13 // indirect
 	github.com/vektah/gqlparser v1.3.1
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 	gopkg.in/dgrijalva/jwt-go.v3 v3.2.0
 )
