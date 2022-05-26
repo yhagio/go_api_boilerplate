@@ -21,7 +21,7 @@ require (
 	github.com/stretchr/testify v1.7.1
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2
 	github.com/swaggo/gin-swagger v1.4.3
-	github.com/swaggo/swag v1.8.1
+	github.com/swaggo/swag v1.8.2
 	github.com/ugorji/go v1.1.13 // indirect
 	github.com/vektah/gqlparser v1.3.1
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
