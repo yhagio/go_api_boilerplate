@@ -18,8 +18,8 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/stretchr/objx v0.2.0 // indirect
 	github.com/stretchr/testify v1.7.2
-	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2
-	github.com/swaggo/gin-swagger v1.4.3
+	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe
+	github.com/swaggo/gin-swagger v1.5.0
 	github.com/swaggo/swag v1.8.2
 	github.com/vektah/gqlparser v1.3.1
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
