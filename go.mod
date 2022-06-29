@@ -20,7 +20,7 @@ require (
 	github.com/stretchr/testify v1.7.2
 	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe
 	github.com/swaggo/gin-swagger v1.5.0
-	github.com/swaggo/swag v1.8.2
+	github.com/swaggo/swag v1.8.3
 	github.com/vektah/gqlparser v1.3.1
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 	gopkg.in/dgrijalva/jwt-go.v3 v3.2.0
